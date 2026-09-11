@@ -73,6 +73,15 @@ npm run dev
 | 15 | Adding Metadata | 添加元数据 |
 | 16 | Next Steps | 下一步 |
 
+## 常见问题
+
+- **`npm run dev` 报 `Can't resolve '@tailwindcss/forms'`，或「刚装的包找不到」**：
+  dev server 是在安装依赖**之前**启动的，模块缓存过期了。`Ctrl+C` 停掉再重新 `npm run dev` 即可；
+  若仍报错，删掉 `.next` 目录后再启动（这是 Turbopack 的缓存，删了会自动重建）。
+- **端口被占用**：终端会打印回退后的地址（3001、3002…），以它为准。
+- **访问 `/seed` 报数据库连接错误**：正常现象 —— 第 6 章配好 Postgres 之后它才能用。
+- **文档里改 `tailwind.config.ts` 的步骤在本项目不生效**：本项目是 Tailwind v4，主题写在 `app/globals.css` 的 `@theme` 里。
+
 ## 说明
 
 - 本仓库**既是学习工作台，也是课程练习场**：不用另建 `nextjs-dashboard`，直接在这里动手。
