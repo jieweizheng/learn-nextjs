@@ -1,0 +1,24 @@
+{
+  "name": "nextjs-learn-journey",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Next.js 官方 Dashboard 课程（16 章）学习工作台：章节清单 + 每章学习计划 + Agent 引导规则",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "^16.3.4",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.3",
+    "@types/node": "^22.20.2",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^7.0.2"
+  }
+}
