@@ -31,7 +31,7 @@ export const chapter07: Chapter = {
       explain: [
         "打开 `app/lib/data.ts`，顶部大致是这样：`import postgres from 'postgres'`，然后 `const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' })`（本项目里就是官方完整版）。它创建一个**连接池**，后续所有查询共用它，避免每次查询都重新建立连接。",
         "`sql` 依赖 Node 环境与密钥（`POSTGRES_URL`），所以**只能在服务端运行**。**Server Component 默认就在服务端**，因此你可以放心地在组件里 `import` 这些函数、直接读写数据库，而不需要先做一个 API 路由 —— 这是 App Router 一个很大的便利。",
-        "课程把所有查询函数（`fetchRevenue`、`fetchLatestInvoices`、`fetchCardData`、`fetchFilteredInvoices`、`fetchInvoicesPages`、`fetchInvoiceById`、`fetchCustomers`……）都放在 `data.ts`。这种「对外只暴露函数的数据库层」叫 **DAL（Data Access Layer）**，好处是查询逻辑集中、便于复用与替换。",
+        "课程把所有查询函数（`fetchRevenue`、`fetchLatestInvoices`、`fetchCardData`、`fetchFilteredInvoices`、`fetchInvoicesPages`、`fetchInvoiceById`、`fetchCustomers`……）都放在 `app/lib/data.ts`。这种「对外只暴露函数的数据库层」叫 **DAL（Data Access Layer）**，好处是查询逻辑集中、便于复用与替换。",
       ],
       code:
         "// app/lib/data.ts（顶部，本项目已有）\nimport postgres from 'postgres';\n\nconst sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });",
@@ -50,7 +50,7 @@ export const chapter07: Chapter = {
       check: "`/dashboard` 上出现收入图表；想清楚「取消注释」的代码做了什么，而不是只是让它显示出来。",
       pitfalls: [
         "忘记把页面写成 `async`，`await` 会直接报语法错误。",
-        "组件里传入的数据类型与 `definitions.ts` 不匹配时，编辑器会报红 —— 这正是在帮你避免运行时错误。",
+        "组件里传入的数据类型与 `app/lib/definitions.ts` 不匹配时，编辑器会报红 —— 这正是在帮你避免运行时错误。",
       ],
     },
     {

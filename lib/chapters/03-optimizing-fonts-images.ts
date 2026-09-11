@@ -73,7 +73,7 @@ export const chapter03: Chapter = {
       explain: [
         "`next/image` 的 `<Image>` 相比原生 `<img>` 会自动做这些事：**按设备尺寸生成并返回合适的图片**（避免给手机发 2000px 大图）、**优先用 WebP/AVIF 等现代格式**、**进入视口才加载（懒加载）**、**必须给出宽高比，从而预留空间、防止布局偏移**。",
         "用法：`import Image from 'next/image'`，然后 `<Image src=\"/hero-desktop.png\" width={1000} height={760} className=\"hidden md:block\" alt=\"\" />`。`width` / `height` 写**源图的真实像素尺寸**（用来算比例），并不决定最终显示大小 —— 显示大小交给 CSS 类名。",
-        "先在 `app/playground/page.tsx` 里练：加 `hero-desktop.png`，用 `hidden md:block` 让它只在桌面端（≥768px）显示。图片已在 `public/` 里，直接引用 `/hero-desktop.png` 即可。",
+        "先在 `app/playground/page.tsx` 里练：加一张 hero 图，用 `hidden md:block` 让它只在桌面端（≥768px）显示。图片已在项目里（`public/hero-desktop.png`），而 `public/` 下的文件对应网站的根路径，所以代码里直接写 `src=\"/hero-desktop.png\"`（开头那个 `/` 指的是网站根，不是磁盘根）。",
       ],
       code:
         "import Image from 'next/image';\n\n<Image\n  src=\"/hero-desktop.png\"\n  width={1000}\n  height={760}\n  className=\"hidden md:block\"\n  alt=\"Acme dashboard 预览图\"\n/>",
@@ -87,7 +87,7 @@ export const chapter03: Chapter = {
       title: "练习：添加移动端 hero 图",
       why: "同一个位置在手机和桌面需要不同裁切的图，这是真实项目最常见的响应式需求。",
       explain: [
-        "再加一张 `hero-mobile.png`，`width={560}`、`height={620}`，类名用 `block md:hidden` —— 与上一张恰好相反，于是两张图互斥显示：**桌面看桌面图，手机看手机图**。",
+        "再加一张移动端 hero 图（`public/hero-mobile.png`），`width={560}`、`height={620}`，类名用 `block md:hidden` —— 与上一张恰好相反，于是两张图互斥显示：**桌面看桌面图，手机看手机图**。",
         "这就是「响应式图片」的朴素做法：不是把一张大图缩放，而是让浏览器**只下载当前设备真正需要的那张**。",
       ],
       code: "<Image\n  src=\"/hero-mobile.png\"\n  width={560}\n  height={620}\n  className=\"block md:hidden\"\n  alt=\"Acme dashboard 移动端预览\"\n/>",

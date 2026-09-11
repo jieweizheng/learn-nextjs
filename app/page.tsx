@@ -1,4 +1,5 @@
 import ChapterChecklist from "@/components/chapter-checklist";
+import FileChip from "@/components/file-chip";
 import { chapters, totalKnowledgePoints } from "@/lib/chapters";
 
 export default function Page() {
@@ -39,11 +40,12 @@ export default function Page() {
       <ChapterChecklist chapters={chapters} />
 
       <footer className="mt-14 border-t border-slate-200 pt-6 text-sm text-slate-400">
-        <p>
-          学习计划在 <code className="rounded bg-slate-100 px-1.5 py-0.5">chapters/</code>{" "}
-          目录下，Agent 引导规则见{" "}
-          <code className="rounded bg-slate-100 px-1.5 py-0.5">AGENTS.md</code>。
-          课程内容版权归{" "}
+        <p className="flex flex-wrap items-center gap-1">
+          学习计划在
+          <FileChip path="chapters/README.md" />
+          目录下，Agent 引导规则见
+          <FileChip path="AGENTS.md" />。
+          <span>课程内容版权归</span>
           <a
             className="text-indigo-500 hover:underline"
             href="https://nextjs.org/learn"
@@ -51,8 +53,8 @@ export default function Page() {
             rel="noreferrer"
           >
             Next.js 官方文档
-          </a>{" "}
-          所有。
+          </a>
+          <span>所有。</span>
         </p>
       </footer>
     </main>

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import ChapterSteps from "@/components/chapter-steps";
+import FileChip from "@/components/file-chip";
 import InlineText from "@/components/inline-text";
 import {
   chapterDataPath,
@@ -71,8 +72,9 @@ export default async function ChapterPage({
           >
             打开官方文档 ↗
           </a>
-          <span className="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm text-slate-500">
-            学习计划：{chapterPlanPath(chapter)}
+          <span className="inline-flex flex-wrap items-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm text-slate-500">
+            学习计划：
+            <FileChip path={chapterPlanPath(chapter)} />
           </span>
         </div>
       </header>
@@ -123,7 +125,7 @@ export default async function ChapterPage({
           它只讲解与提示，<b>不会替你改代码，也不会替你运行命令</b>。
         </p>
         <p className="mt-2 text-xs text-indigo-900/60">
-          讲解正文所在文件：{chapterDataPath(chapter)}
+          讲解正文所在文件：<FileChip path={chapterDataPath(chapter)} />
         </p>
       </section>
 

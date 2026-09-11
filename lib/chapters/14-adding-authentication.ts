@@ -54,7 +54,7 @@ export const chapter14: Chapter = {
       pitfalls: [
         "在 `auth.config.ts` 里 import `bcrypt`，会让路由保护那一步报运行时错误 —— 这正是要拆文件的原因。",
         "忘记生成并配置 `AUTH_SECRET`：会话无法签名，登录行为会异常。",
-        "课程的登录账号沿用第 6 章播种的数据，示例邮箱 `user@nextmail.com`、密码 `123456`（以你 `placeholder-data.ts` 里的实际数据为准）。",
+        "课程的登录账号沿用第 6 章播种的数据，示例邮箱 `user@nextmail.com`、密码 `123456`（以你 `app/lib/placeholder-data.ts` 里的实际数据为准）。",
       ],
     },
     {

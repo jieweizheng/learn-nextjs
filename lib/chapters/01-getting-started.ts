@@ -12,7 +12,7 @@ export const chapter01: Chapter = {
     "会启动开发服务器并访问页面（3000 被占用时会回退到 3001）",
     "能说出 `app/`、`app/ui/`、`app/lib/`、`public/` 各自负责什么",
     "理解「文件夹即路由」以及 `page.tsx`、`layout.tsx` 这类特殊文件的作用",
-    "知道 `placeholder-data.ts` 与 `definitions.ts` 在第 6、7 章会被用来做什么",
+    "知道 `app/lib/placeholder-data.ts` 与 `app/lib/definitions.ts` 在第 6、7 章会被用来做什么",
   ],
   points: [
     {
@@ -76,7 +76,7 @@ export const chapter01: Chapter = {
       code:
         "// app/lib/definitions.ts（节选，你项目里就是这个）\nexport type Invoice = {\n  id: string;\n  customer_id: string;\n  amount: number;\n  date: string;\n  // 字符串联合类型：status 只能是 'pending' 或 'paid' 之一\n  status: 'pending' | 'paid';\n};",
       check:
-        "能说出 `Invoice` 有哪些字段，以及 `placeholder-data.ts` 将来会被谁使用。",
+        "能说出 `Invoice` 有哪些字段，以及 `app/lib/placeholder-data.ts` 将来会被谁使用。",
     },
   ],
   tips: [

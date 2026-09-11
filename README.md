@@ -19,10 +19,37 @@ npm run dev
 
 ## 怎么用
 
-1. **打开主页**，你会看到 16 个章节的清单和总进度条。
-2. **点某章的「学习计划」**，进入详情页：有学习目标、逐步任务清单，可以逐条打勾并记笔记。
+1. **打开主页**，你会看到 16 个章节的清单和总进度条（章节进度 + 知识点进度）。
+2. **点某章的「学习计划」**，进入详情页：有学习目标、知识点地图，以及带**具体讲解**的知识点清单
+   （每项都能单独打勾，含示例代码、自检标准、常见坑），还能记笔记。
 3. **对照官方文档动手**：让 AI 助手带你完成每一步。它只讲解与提示；**代码你自己写，命令你自己跑**。
 4. **完成一章**回主页勾选，进度自动保存在浏览器本地。
+
+## 文件跳转（点一下就能在编辑器里打开）
+
+讲解里出现的文件路径都是**可点击的**，例如 `app/lib/definitions.ts`：
+
+- **点路径本身** → 用你的编辑器打开该文件（打开的是本机 `D:\learn-nextjs` 里的真实文件）；
+- **点后面的 ⧉** → 复制该文件的绝对路径。
+
+**不需要任何配置**：用哪个编辑器、项目根目录在哪，都由本机自动识别 ——
+dev server 就跑在你电脑上，它会依次看：启动它的终端（编辑器的内置终端会留下痕迹）、
+**正在运行的编辑器进程**、系统里注册了哪些编辑器协议（Windows 注册表 / macOS 应用目录）、
+以及 PATH 与常见安装目录。把鼠标停在文件路径上就能看到识别结果
+（例如「在 Cursor 中打开：D:\learn-nextjs\app\lib\definitions.ts」）。
+
+- 首次点击时浏览器会问「是否允许打开 Cursor / VS Code」，**允许一次**就好；
+- 支持 Cursor、VS Code（含 Insiders）、Windsurf、Zed、JetBrains 全家桶、Sublime Text；
+- 只在**本机 `npm run dev`** 时有效；部署到线上后浏览器碰不到你本机文件，这个功能自然失效 ——
+  那时点击会退化成「复制路径」，不会报错。
+
+想知道识别到了什么，可以直接访问 http://localhost:3000/api/editor
+（返回编辑器、项目根目录，以及判断依据 `source` / `evidence`）。
+
+万一自动识别不灵（编辑器没注册协议、或项目不在启动目录下），两个兜底办法：
+在项目根的 `.env.local` 里写 `LEARN_NEXTJS_EDITOR=cursor`（指定编辑器）或
+`NEXT_PUBLIC_PROJECT_ROOT=D:/learn-nextjs`（指定项目根目录）。
+当然，**点 ⧉ 复制路径**这条路永远有效。
 
 ## 目录结构
 
@@ -30,22 +57,32 @@ npm run dev
 .
 ├── app/
 │   ├── page.tsx                 # 主页：16 章清单 + 打勾 + 进度条（⛔ 别改）
-│   ├── chapters/[slug]/page.tsx # 章节详情页：目标 + 步骤 + 笔记（⛔ 别改）
+│   ├── chapters/[slug]/page.tsx # 章节详情页：目标 + 知识点清单/讲解 + 笔记（⛔ 别改）
 │   ├── ui/                      # ⭐ 课程 UI 组件（卡片/表格/表单/侧边栏，已就位）
 │   ├── lib/                     # ⭐ 课程数据与工具（definitions/utils/data/placeholder-data）
 │   ├── seed/ query/             # ⭐ 课程的第 6 章播种与试查路由
+│   ├── api/editor/route.ts      # ⭐ 工作台内部接口：自动识别本机编辑器与项目根目录
 │   ├── playground/              # ⭐ 第 2–3 章的练手页（你自己建）
 │   ├── dashboard/               # ⭐ 第 4 章起按课程创建
 │   ├── not-found.tsx
 │   ├── layout.tsx
 │   └── globals.css              # Tailwind v4 + 课程主题（@theme / shimmer）
 ├── public/                      # ⭐ 课程图片素材（hero、客户头像）+ favicon
-├── components/                  # 工作台交互组件（章节打勾、知识点勾选与讲解渲染、行内代码）
+├── components/                  # 工作台交互组件
+│   ├── chapter-checklist.tsx    #   主页章节打勾
+│   ├── chapter-steps.tsx        #   知识点清单 + 讲解渲染
+│   ├── inline-text.tsx          #   反引号 → 行内代码 / 可点文件路径
+│   └── file-chip.tsx            #   ⭐ 可点击文件路径（在编辑器打开 / 复制）
 ├── lib/chapters/                # 16 章数据与知识点讲解（单一来源）
 │   ├── types.ts                 #   Chapter / KnowledgePoint 类型
 │   ├── 01-getting-started.ts    #   每章一个文件：知识点 + 讲解 + 代码 + 自检 + 常见坑
 │   ├── ...
 │   └── index.ts                 #   汇总导出 chapters 与若干工具函数
+├── lib/editor-links.ts          # ⭐ 文件路径识别 + 各编辑器的协议 URL 构造
+├── lib/detect-editor.ts         # ⭐ 自动识别本机编辑器（注册表/进程/PATH/终端环境变量）
+├── lib/use-editor-env.ts        # ⭐ 客户端拉取识别结果，所有文件链接共用
+├── lib/project-root.ts          # ⭐ 服务端获取项目根目录（process.cwd()）
+├── lib/storage-keys.ts          # ⭐ 所有 localStorage 键名（客户端组件只引它）
 ├── chapters/                    # ⭐ 每章的学习计划（引导大纲，与上面一一对应）
 │   ├── 01-getting-started/PLAN.md
 │   ├── 02-css-styling/PLAN.md
@@ -85,6 +122,10 @@ npm run dev
 - **端口被占用**：终端会打印回退后的地址（3001、3002…），以它为准。
 - **访问 `/seed` 报数据库连接错误**：正常现象 —— 第 6 章配好 Postgres 之后它才能用。
 - **文档里改 `tailwind.config.ts` 的步骤在本项目不生效**：本项目是 Tailwind v4，主题写在 `app/globals.css` 的 `@theme` 里。
+- **点了文件路径没反应**：① 浏览器第一次会弹权限框，需要允许；② 自动识别到的编辑器不是你实际在用的
+  （访问 `/api/editor` 看识别结果，必要时在 `.env.local` 里写 `LEARN_NEXTJS_EDITOR=cursor` 之类）；
+  ③ 编辑器没注册 URL 协议（VS Code / Cursor 里执行一次「安装 `code` 命令」）。
+  实在不行用 ⧉ 复制路径，粘到编辑器里打开。
 
 ## 说明
 

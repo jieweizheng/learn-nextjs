@@ -17,7 +17,7 @@ export default function ChapterSteps({
   points: KnowledgePoint[];
 }) {
   const stepsKey = pointsStorageKey(slug);
-  const notesKey = `nextjs-learn:notes:${slug}`;
+  const notesKey = notesStorageKey(slug);
 
   const [done, setDone] = useState<Record<number, boolean>>({});
   const [notes, setNotes] = useState("");
