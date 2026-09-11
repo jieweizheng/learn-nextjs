@@ -26,6 +26,37 @@
 在 `app/dashboard/page.tsx` 引入并 `await`：`const revenue = await fetchRevenue();`
 然后取消注释 `<RevenueChart revenue={revenue} />` 以及组件 `app/ui/dashboard/revenue-chart.tsx` 内部代码，你会看到图表。
 
+```tsx
+// app/dashboard/page.tsx
+import { fetchRevenue } from '@/app/lib/data';
+import RevenueChart from '@/app/ui/dashboard/revenue-chart';
+
+export default async function Page() {
+  const revenue = await fetchRevenue();
+
+  return (
+    <main>
+      <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-4 lg:grid-cols-8">
+        <RevenueChart revenue={revenue} />
+      </div>
+    </main>
+  );
+}
+```
+
+**这是两个独立的动作，别混为一谈：**
+
+| 动作 | 位置 | 作用 |
+| --- | --- | --- |
+| 取消注释 | `app/ui/dashboard/revenue-chart.tsx` 内部 | 让组件真的会把数据画成柱状图 |
+| 传数据 | `app/dashboard/page.tsx` 里 `<RevenueChart revenue={revenue} />` | 把查到的数据喂给组件 |
+
+只做前者页面依然没图表；只做后者图表区是空的。
+
+> starter 之所以把渲染代码注释掉，是因为前几章还没有 `fetchRevenue()`：
+> 那时打开会渲染出空图表区甚至报错，干扰第 4–6 章的学习 —— 留到本章才让你亲手打开。
+> `RevenueChart` 是**默认导出**（`import RevenueChart from ...`），`Card` 才是具名导出。
+
 ### 3. 为 LatestInvoices 取数
 
 再 `await fetchLatestInvoices()`，取消注释 `<LatestInvoices latestInvoices={latestInvoices} />` 及其内部代码，只显示最近 5 条发票。

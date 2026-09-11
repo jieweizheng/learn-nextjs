@@ -42,14 +42,18 @@ export const chapter07: Chapter = {
       why: "这是本章的核心动作：页面变成 `async` 函数，`await` 数据，再把结果作为 props 传下去。",
       explain: [
         "在 `app/dashboard/page.tsx` 里把组件写成 `export default async function Page()`，然后 `const revenue = await fetchRevenue();`，再把数据传给 `<RevenueChart revenue={revenue} />`。服务端组件可以是 `async` 的，这是它相对客户端组件的关键能力。",
-        "同时按文档**取消注释** `app/ui/dashboard/revenue-chart.tsx` 里的相关代码（课程刻意把一部分渲染代码注释掉了，让你亲手打开），保存后 `/dashboard` 上就会出现图表。",
+        "同时按文档**取消注释** `app/ui/dashboard/revenue-chart.tsx` 里的相关代码。官方 starter 之所以把这段注释掉，是因为**前几章还没有 `fetchRevenue()`**：那时页面拿不到数据，图表区要么空着、要么直接报错，反而干扰第 4–6 章的学习。所以课程故意把渲染代码封起来，留到本章才让你亲手打开 —— 打开的三处是：文件顶部注释说的 `generateYAxis(revenue)`（算 Y 轴刻度与最大值）、空数据兜底的 `if (!revenue || revenue.length === 0)`，以及 JSX 里 `{/* NOTE: Uncomment this code in Chapter 7 */}` 下面那一大整块柱状图。",
+        "⚠️ 这二者是**两件事**，别混为一谈：**取消注释**是让组件内部真的会画柱状图；**在页面里 `<RevenueChart revenue={revenue} />`** 才是把数据喂给它。只做前者页面依然没图表，只做后者图表区是空的。",
         "关于 `async/await` 有一个常见误解值得现在就讲清：**在同一个函数里写多个 `await` 是串行执行的** —— 第二个查询要等第一个返回才开始，总耗时是两者之和。`async/await` 只是「顺序代码的语法糖」，它本身**不提供并发**。要并发必须显式使用 `Promise.all`（本章最后一个知识点会用到）。",
       ],
       code:
-        "// app/dashboard/page.tsx\nexport default async function Page() {\n  const revenue = await fetchRevenue();\n\n  return (\n    <main>\n      <h1 className=\"mb-4 text-xl md:text-2xl\">Dashboard</h1>\n      <div className=\"grid gap-6 sm:grid-cols-2 lg:grid-cols-4\">\n        {/* 卡片…… */}\n      </div>\n      <div className=\"mt-6 grid grid-cols-1 gap-6 md:grid-cols-4 lg:grid-cols-8\">\n        <RevenueChart revenue={revenue} />\n      </div>\n    </main>\n  );\n}",
+        "// app/dashboard/page.tsx\nimport { fetchRevenue } from '@/app/lib/data';\nimport RevenueChart from '@/app/ui/dashboard/revenue-chart';\n\nexport default async function Page() {\n  const revenue = await fetchRevenue();\n\n  return (\n    <main>\n      <h1 className=\"mb-4 text-xl md:text-2xl\">Dashboard</h1>\n      <div className=\"grid gap-6 sm:grid-cols-2 lg:grid-cols-4\">\n        {/* 卡片…… */}\n      </div>\n      <div className=\"mt-6 grid grid-cols-1 gap-6 md:grid-cols-4 lg:grid-cols-8\">\n        <RevenueChart revenue={revenue} />\n      </div>\n    </main>\n  );\n}",
       check: "`/dashboard` 上出现收入图表；想清楚「取消注释」的代码做了什么，而不是只是让它显示出来。",
       pitfalls: [
+        "示例为了聚焦，省略了 `import`；照抄时记得补上 `import RevenueChart from '@/app/ui/dashboard/revenue-chart'`（`RevenueChart` 是**默认导出**，`Card` 才是具名导出 —— 写反了会报 `does not provide an export named`）。",
         "忘记把页面写成 `async`，`await` 会直接报语法错误。",
+        "async 组件忘了 `return` JSX（或把 JSX 注释掉了）：React 会报 `Nothing was returned from render`，因为函数返回了 `undefined`。",
+        "传给组件的属性名要写成 `revenue={revenue}`；写成 `props={revenue}` 时组件里的 `revenue` 是 `undefined`，会命中空数据兜底显示 `No data available.`，而不是报错 —— 这类静默失败最容易被当成「图表坏了」。",
         "组件里传入的数据类型与 `app/lib/definitions.ts` 不匹配时，编辑器会报红 —— 这正是在帮你避免运行时错误。",
       ],
     },
@@ -57,7 +61,7 @@ export const chapter07: Chapter = {
       title: "为 LatestInvoices 取数",
       why: "重复一遍「取数 → 传 props → 渲染」的流程，把模式固定下来。",
       explain: [
-        "同样在页面里 `const latestInvoices = await fetchLatestInvoices();`，传给 `<LatestInvoices latestInvoices={latestInvoices} />`，并取消注释 `app/ui/dashboard/latest-invoices.tsx` 里的渲染代码。",
+        "同样在页面里 `const latestInvoices = await fetchLatestInvoices();`，传给 `<LatestInvoices latestInvoices={latestInvoices} />`，并取消注释 `app/ui/dashboard/latest-invoices.tsx` 里的渲染代码。别忘了补 `import LatestInvoices from '@/app/ui/dashboard/latest-invoices'`（同样是默认导出）。",
         "这个查询只用 `ORDER BY date DESC LIMIT 5` 取**最近 5 条**发票，并 JOIN 客户表拿到姓名与头像。这类「只取需要的数据」的习惯很重要 —— 不要在页面里把全表查出来再 `slice`。",
         "注意组件里金额的处理：数据库返回的是 `number`，显示前用 `formatCurrency`（在 `app/lib/utils.ts` 里）格式化成货币字符串。",
       ],
