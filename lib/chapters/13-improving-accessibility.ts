@@ -42,7 +42,7 @@ export const chapter13: Chapter = {
       why: "它把「上一次提交的结果」和「提交中」两个状态直接交给你，表单反馈从此不用自己造轮子。",
       explain: [
         "`useActionState` 来自 `react-dom`，用法是 `const [state, formAction, isPending] = useActionState(action, initialState)`：`state` 是 action 的返回值（比如错误信息），`formAction` 是包装好的函数（直接给 `<form action={formAction}>`），`isPending` 告诉你是否正在提交。",
-        "因此 `create-form.tsx` 需要改成**客户端组件**（顶部 `'use client'`），表单改成 `<form action={formAction}>`，提交按钮用 `disabled={isPending}`，并在按钮里显示 `isPending ? 'Submitting...' : 'Create Invoice'`。",
+        "因此 `app/ui/invoices/create-form.tsx` 需要改成**客户端组件**（顶部 `'use client'`），表单改成 `<form action={formAction}>`，提交按钮用 `disabled={isPending}`，并在按钮里显示 `isPending ? 'Submitting...' : 'Create Invoice'`。",
         "官方还有一条很实用的建议：按钮禁用后要让用户知道「事情在发生」，所以文字/图标要有变化，而不是只是变灰。",
       ],
       code:
@@ -88,7 +88,7 @@ export const chapter13: Chapter = {
       explain: [
         "照着 `customerId` 的写法，给 `amount` 与 `status` 也加上错误显示与 `aria-describedby`（它们的错误 id 用 `amount-error`、`status-error`）。",
         "然后运行 `npm run lint`。Next.js 的 ESLint 配置包含 `eslint-plugin-jsx-a11y`，它会提示比如「图片缺 alt」「可点击元素不可聚焦」这类问题。**注意本项目尚未安装 ESLint 相关依赖**，如果报找不到 eslint，先在项目根 `npm install -D eslint eslint-config-next` 再跑。",
-        "有精力的话，把同样的模式套到 `edit-form.tsx`（编辑发票的表单）上 —— 这才是「学会」的标志：换个地方也能自己落地。",
+        "有精力的话，把同样的模式套到 `app/ui/invoices/edit-form.tsx`（编辑发票的表单）上 —— 这才是「学会」的标志：换个地方也能自己落地。",
       ],
       code: "npm install -D eslint eslint-config-next\nnpm run lint",
       check: "三个字段都能显示各自的错误；`npm run lint` 里没有与无障碍相关的报错。",

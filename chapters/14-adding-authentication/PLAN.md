@@ -42,7 +42,7 @@ export const { auth, signIn, signOut } = NextAuth({
 
 ### 3. 登录 Action
 
-在 `actions.ts` 写 `authenticate`，调用 `signIn('credentials', formData)`，捕获 `AuthError` 返回友好错误。
+在 `app/lib/actions.ts` 写 `authenticate`，调用 `signIn('credentials', formData)`，捕获 `AuthError` 返回友好错误。
 
 ### 4. 登录表单
 
@@ -78,7 +78,7 @@ const [errorMessage, formAction, isPending] = useActionState(
 
 ## 💡 提示 / 易错点
 
-- 登录用的测试账号密码在第 6 章播种数据里（`placeholder-data.ts`）。
+- 登录用的测试账号密码在第 6 章播种数据里（`app/lib/placeholder-data.ts`）。
 - 需要环境变量 `AUTH_SECRET`（新版 NextAuth 用 `AUTH_SECRET`）。
 - 版本差异较大，遇到 API 名称对不上，优先看官方文档对应版本。
 

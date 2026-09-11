@@ -77,7 +77,7 @@ if (!invoice) {
 }
 ```
 
-再在同目录新建 `not-found.tsx` 显示 404 UI 与「返回」链接。
+再新建 `app/dashboard/invoices/[id]/edit/not-found.tsx` 显示 404 UI 与「返回」链接。
 
 ## 💡 提示 / 易错点
 

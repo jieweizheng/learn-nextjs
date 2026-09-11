@@ -24,11 +24,11 @@ export const chapter01: Chapter = {
         "官方文档全程用 `pnpm dev`，本项目统一用 npm，因此把命令换成 `npm run dev` 即可，两者效果一样。",
         "官方文档里那个「故意没有任何样式」的首页，在本项目里换成了你现在看到的**章节清单主页** —— 这是同一个位置（`/`），只是内容不同。",
       ],
-      code: "cd D:\\learn-nextjs\nnpm run dev",
+      code: "cd <项目目录>\nnpm run dev",
       check:
         "终端打印出 Local 地址，浏览器能打开页面；随便改动页面上的一个字并保存，页面自动更新。",
       pitfalls: [
-        "本机 3000 端口常被别的进程占用，Next 会自动顺延到 **3001**（甚至 3002）。以终端**实际打印**的地址为准，不要死认 3000。",
+        "3000 端口有时会被别的进程占用，Next 会自动顺延到 **3001**（甚至 3002）。以终端**实际打印**的地址为准，不要死认 3000。",
         "报 `EADDRINUSE` 或提示端口被占用：说明已经有一个 dev server 在跑。先关掉旧的，不要同时开两个。",
       ],
     },
@@ -61,7 +61,7 @@ export const chapter01: Chapter = {
       explain: [
         "`public/` 里的文件会**原样托管在网站根路径下**：`public/hero-desktop.png` 对应的网址就是 `/hero-desktop.png`，你可以直接在浏览器地址栏访问来验证。",
         "它适合放不会变化的资源：图片、`favicon.ico`、robots.txt 等。这些文件不会被构建工具改写，所以文件名要自己保证可读、可推断。",
-        "课程需要的素材已经放进来了：hero 图（`hero-desktop.png`、`hero-mobile.png`）、客户头像（`public/customers/*.png`）。第 3 章你会用 `next/image` 引用它们。",
+        "课程需要的素材已经放进来了：hero 图（`public/hero-desktop.png`、`public/hero-mobile.png`）、客户头像（`public/customers/*.png`）。第 3 章你会用 `next/image` 引用它们。",
       ],
       check: "浏览器访问 `http://localhost:3000/hero-desktop.png` 能直接看到图片。",
     },

@@ -51,7 +51,7 @@
 ## 💡 提示 / 易错点
 
 - **一定要先 Show secret 再复制**，否则拿到的是占位值。
-- 如果你熟悉 Postgres，也可以自备数据库并跳过 Vercel 部分，但要同步修改 `data.ts` 里的查询。
+- 如果你熟悉 Postgres，也可以自备数据库并跳过 Vercel 部分，但要同步修改 `app/lib/data.ts` 里的查询。
 - 播种用了 `bcrypt` 给密码做哈希；若 `bcrypt` 与你的环境不兼容，可改用 `bcryptjs`。
 
 ## ✅ 完成标准

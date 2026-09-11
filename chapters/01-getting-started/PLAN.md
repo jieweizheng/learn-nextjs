@@ -13,7 +13,7 @@
 ## 🎯 学习目标
 
 - 认识 `app/`、`app/ui/`、`app/lib/`、`public/` 各自负责什么
-- 会启动开发服务器并访问（本机 3000 常被占用，会回退到 3001）
+- 会启动开发服务器并访问（3000 被占用时会回退到 3001）
 - 了解课程使用 TypeScript，以及什么是「占位数据」
 
 ## ✅ 前置准备（已由 Agent 完成，你无需操作）
@@ -105,10 +105,10 @@ npm run dev
 如果你就是想完整练一遍「创建项目」这个动作，可以在别的目录建一个独立项目：
 
 ```bash
-cd D:\
+cd <你想放项目的目录>
 npx create-next-app@latest nextjs-dashboard --example "https://github.com/vercel/next-learn/tree/main/dashboard/starter-example" --use-npm
 ```
 
-- 放在 `D:\learn-nextjs` **外面**（同级目录），别放进 `app/` 里。
+- 放在**本仓库外面**（同级目录），别放进 `app/` 里。
 - 官方文档默认用 `pnpm`；这里统一用 `npm`，一种包管理器就够了。
 - 但**本课程的主线仍在本项目里进行**，这个只是可选的额外练习。

@@ -30,11 +30,14 @@ import "./globals.css";
 官方文档用的是 Tailwind v3 的 `@tailwind base; @tailwind components; @tailwind utilities;`，
 本项目是 v4，一行 `@import` 代替，作用相同 —— 所以这一步你**不用动任何代码**。
 
-> ⚠️ 官方 starter 把全局样式表放在 `app/ui/global.css`。**本项目没有这个文件**，
-> 对应物是 `app/globals.css`（Tailwind v4 主题也写在这里）。文档里出现 `app/ui/global.css` 时，
+> ⚠️ 官方 starter 把全局样式表放在 app/ui/global.css。**本项目没有这个文件**，
+> 对应物是 `app/globals.css`（Tailwind v4 主题也写在这里）。文档里出现 app/ui/global.css 时，
 > 在本项目一律按 `app/globals.css` 理解，别去项目里找那个不存在的路径。
-> 同样，官方 starter 的 `app/ui/home.module.css`（现成的 CSS Modules 示例）本项目也没搬过来，
+> 同样，官方 starter 的 app/ui/home.module.css（现成的 CSS Modules 示例）本项目也没搬过来，
 > 第 2 步的样式模块由**你自己写**。
+>
+> （注：app/ui/global.css 这类路径这里**故意不加反引号** —— 加了会被工作台渲染成可点击的文件链接，
+> 而这个文件并不存在。只有项目里真实存在的路径才用反引号。）
 
 ## 📋 步骤清单
 
@@ -96,7 +99,7 @@ export default function Page() {
 - [ ] 能说明本项目的样式是从哪来的（`app/layout.tsx` → `app/globals.css`）
 - [ ] `/playground` 页能用 Tailwind 画出三角形
 - [ ] 用 CSS Modules 复现出同样的形状
-- [ ] 看懂 `status.tsx` 里 `clsx` 的用法
+- [ ] 看懂 `app/ui/invoices/status.tsx` 里 `clsx` 的用法
 
 ## 🤖 交给 Agent 的引导规则
 

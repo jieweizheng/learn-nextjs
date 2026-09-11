@@ -57,7 +57,7 @@ export const chapter05: Chapter = {
       why: "导航能高亮「你在哪」，用户才不会迷路；这需要组件在客户端获取当前路径。",
       explain: [
         "要判断「哪个链接是当前页」，组件必须知道当前 URL。Next.js 提供了 `usePathname()` hook：调用它返回当前路径字符串（例如 `/dashboard/invoices`）。",
-        "但 hook 只能用在**客户端组件**里，所以要在 `nav-links.tsx` **文件顶部**加上 `'use client'`。这一行告诉 Next.js：这个组件需要在浏览器里运行、可以带交互与状态。",
+        "但 hook 只能用在**客户端组件**里，所以要在 `app/ui/dashboard/nav-links.tsx` **文件顶部**加上 `'use client'`。这一行告诉 Next.js：这个组件需要在浏览器里运行、可以带交互与状态。",
         "然后就可以用 `clsx` 拼类名：当前路径与 `link.href` 相等时加上高亮类（课程用的是 `bg-sky-100 text-blue-600`）。注意课程示例里还检查了 `link.href.startsWith(pathname)`，让子路由也能保持父级高亮。",
       ],
       code:

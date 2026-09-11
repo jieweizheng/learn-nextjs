@@ -71,7 +71,7 @@ export default function NavLinks() {
 ## 💡 提示 / 易错点
 
 - 生产环境里，`<Link>` 进入视口时会**自动预取**目标路由的代码，点击时几乎瞬时切换。
-- `nav-links.tsx` 不是特殊文件，名字可以随便改，但改完记得同步 import。
+- `app/ui/dashboard/nav-links.tsx` 不是特殊文件，名字可以随便改，但改完记得同步 import。
 
 ## ✅ 完成标准
 

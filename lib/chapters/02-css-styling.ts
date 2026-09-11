@@ -62,11 +62,11 @@ export const chapter02: Chapter = {
       explain: [
         "`clsx` 把「多个类名 + 条件对象」拼成一个干净的类名字符串：真值才保留。基本用法是 `clsx('基础类', { '条件类': 条件 })`，条件为 `true` 时加上、为 `false` 时忽略。",
         "课程里的例子是发票状态标签 `app/ui/invoices/status.tsx`：待付款时灰色底，已付款时绿色底。它用 `clsx('inline-flex items-center rounded-full px-2 py-1 text-xs', { 'bg-gray-100 text-gray-500': status === 'pending', 'bg-green-500 text-white': status === 'paid' })`。",
-        "如果你只想给一个类名加个可选后缀，也可以写成 `clsx('base', condition && 'extra')`。多读几遍 `status.tsx` 的写法，第 5 章高亮导航链接时会立刻再用到它。",
+        "如果你只想给一个类名加个可选后缀，也可以写成 `clsx('base', condition && 'extra')`。多读几遍 `app/ui/invoices/status.tsx` 的写法，第 5 章高亮导航链接时会立刻再用到它。",
       ],
       code:
         "// app/ui/invoices/status.tsx（课程已有，读它即可）\nimport clsx from 'clsx';\n\n<span\n  className={clsx(\n    'inline-flex items-center rounded-full px-2 py-1 text-xs',\n    {\n      'bg-gray-100 text-gray-500': status === 'pending',\n      'bg-green-500 text-white': status === 'paid',\n    },\n  )}\n>",
-      check: "能不看代码说出 `clsx(基础类, { 类名: 条件 })` 的效果，并解释 `status.tsx` 里两个条件键分别什么时候生效。",
+      check: "能不看代码说出 `clsx(基础类, { 类名: 条件 })` 的效果，并解释 `app/ui/invoices/status.tsx` 里两个条件键分别什么时候生效。",
     },
   ],
   tips: [

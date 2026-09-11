@@ -39,4 +39,4 @@
   已用 v4 的 `@theme` / `@keyframes` 等价写进 `app/globals.css`，文档里「改 `tailwind.config.ts`」的步骤在本项目请改那里。
 - ⚠️ `app/lib/data.ts`（依赖 `postgres`）与 `app/seed/route.ts`（依赖 `bcrypt`）已在位、依赖已装，
   但**第 6 章配好数据库前不要访问 `/seed`**，会报数据库连接错误。
-- 想额外练一遍 `create-next-app`，请在 `D:\learn-nextjs` **外面**另建项目；主线仍在本仓库内推进。
+- 想额外练一遍 `create-next-app`，请在**本仓库外面**另建项目；主线仍在本仓库内推进。

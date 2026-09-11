@@ -45,7 +45,7 @@ export const chapter11: Chapter = {
       why: "这是本章的核心动作：把「提交表单」变成「调用一个服务端函数」。",
       explain: [
         "新建 `app/lib/actions.ts`，**第一行**写 `'use server';`，然后导出 `createInvoice(formData: FormData)`。",
-        "在 `create-form.tsx` 里 `import { createInvoice } from '@/app/lib/actions'`，并把表单改成 `<form action={createInvoice}>`（这个文件因此也可以加上 `'use client'`，课程就是这么做的）。",
+        "在 `app/ui/invoices/create-form.tsx` 里 `import { createInvoice } from '@/app/lib/actions'`，并把表单改成 `<form action={createInvoice}>`（这个文件因此也可以加上 `'use client'`，课程就是这么做的）。",
         "先只写一句 `console.log(formData)` 跑一次也行：点提交按钮，你会在**终端**（不是浏览器控制台）看到打印的 FormData —— 这个现象本身就证明了「函数在服务端执行」。",
         "补充一个概念：`FormData` 从表单取出来的值**全是字符串**（包括金额、日期）。所以下一步必须先校验与转换，不能直接塞进数据库。",
       ],
@@ -74,7 +74,7 @@ export const chapter11: Chapter = {
       explain: [
         "用 `sql` 执行 INSERT，字段名与数据库表一致。写法是模板字符串 + 参数插值：`sql`INSERT INTO invoices (customer_id, amount, status, date) VALUES (${customerId}, ${amountInCents}, ${status}, ${date})``。",
         "这种写法自带**参数化**：`postgres.js` 会把插值当作参数传给数据库，而不是拼进 SQL 字符串，因此天然避免 **SQL 注入**。永远不要用字符串拼接去拼 SQL。",
-        "`sql` 只能在服务端用 —— 而 Server Action 正是服务端，所以在 `actions.ts` 里直接建连接是安全的。",
+        "`sql` 只能在服务端用 —— 而 Server Action 正是服务端，所以在 `app/lib/actions.ts` 里直接建连接是安全的。",
       ],
       check: "提交表单后到数据库的 Data 标签里刷新，能看到新插入的那行记录。",
     },

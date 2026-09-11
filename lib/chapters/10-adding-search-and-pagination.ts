@@ -60,7 +60,7 @@ export const chapter10: Chapter = {
       title: "把输入写进 URL（useSearchParams + useRouter）",
       why: "这是「客户端改地址栏」的标准写法，也是后面分页、筛选的基础模式。",
       explain: [
-        "在 `search.tsx` 顶部导入 `useSearchParams`、`usePathname`、`useRouter` 三个 hook，然后在组件里取到它们的实例。",
+        "在 `app/ui/search.tsx` 顶部导入 `useSearchParams`、`usePathname`、`useRouter` 三个 hook，然后在组件里取到它们的实例。",
         "`handleSearch` 里：`const params = new URLSearchParams(searchParams);` 得到当前参数的**可变副本**（hook 返回的是只读的），然后按条件增删：有搜索词就 `params.set('query', term)`，清空时 `params.delete('query')`。",
         "最后更新地址栏：`router.replace(`${pathname}?${params.toString()}`)`。用 **`replace`** 而不是 `push`，是为了**不往历史记录里堆每一帧输入** —— 否则用户要疯狂点很多次「返回」才能离开这个页面。",
         "这一步做完，输入框的每一次变化都会反映在地址栏上；因为地址变了，**服务端页面会重新执行**，带着新的 `query` 去查数据（下一步接上）。",

@@ -23,7 +23,7 @@ export default function ChapterSteps({
   const [done, setDone] = useState<Record<number, boolean>>({});
   const [notes, setNotes] = useState("");
   const [ready, setReady] = useState(false);
-  /** 每一项的讲解是否展开（默认全部展开，方便通读） */
+  /** 每一项的讲解是否展开（默认全部展开，方便通读）；勾选后会自动收起该条 */
   const [open, setOpen] = useState<Record<number, boolean>>({});
 
   useEffect(() => {
@@ -120,9 +120,12 @@ export default function ChapterSteps({
                   id={`point-check-${i + 1}`}
                   type="checkbox"
                   checked={isDone}
-                  onChange={() =>
-                    setDone((prev) => ({ ...prev, [i]: !prev[i] }))
-                  }
+                  onChange={() => {
+                    const next = !done[i];
+                    setDone((prev) => ({ ...prev, [i]: next }));
+                    // 打勾 = 这条学完了 → 自动收起它的讲解，视线自然落到下一条
+                    if (next) setOpen((prev) => ({ ...prev, [i]: false }));
+                  }}
                   className="mt-1 h-5 w-5 shrink-0 cursor-pointer accent-emerald-500"
                   aria-label={`标记知识点：${point.title}`}
                 />

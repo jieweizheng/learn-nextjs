@@ -54,7 +54,7 @@ export const chapter12: Chapter = {
       title: "用 error.tsx 做路由级兜底",
       why: "这样即使出问题，用户看到的也是「一条友好的提示 + 一个再试按钮」，而不是崩溃页。",
       explain: [
-        "在需要保护的路由段目录下新建 `error.tsx`（课程建在 `app/dashboard/invoices/`）。它必须是一个**客户端组件**（文件顶部 `'use client'`），因为要用到交互（按钮点击）与 `reset` 回调。",
+        "在需要保护的路由段目录下新建 `error.tsx` —— 课程建在 `app/dashboard/invoices/`，也就是 `app/dashboard/invoices/error.tsx`。它必须是一个**客户端组件**（文件顶部 `'use client'`），因为要用到交互（按钮点击）与 `reset` 回调。",
         "它接收两个 props：`error`（错误对象）与 `reset`（一个函数，调用后尝试重新渲染这一段）。课程用它渲染成一个卡片 `<div className=\"flex w-full flex-col ...\">`，里面显示标题、一句提示与一个 `<button onClick={() => reset()}>Try again</button>`。",
         "两个需要知道的事实：一是 `error.tsx` 只在**生产模式**下生效 —— 开发环境里 Next.js 会显示带堆栈的调试覆盖层（那是为了帮你排查，不是 bug）；二是它是**就近生效**的，`error.tsx` 只保护它所在段及其子段，所以你可以在不同层级放多个。",
         "另外，未捕获的异常也会被最近的 `error.tsx` 捕获 —— 所以它是「异常」的最终防线。",
@@ -73,7 +73,7 @@ export const chapter12: Chapter = {
       explain: [
         "场景：`/dashboard/invoices/[id]/edit` 的 id 在数据库里查不到。此时 `fetchInvoiceById(id)` 返回空数组，页面若直接渲染会崩。",
         "正确做法是在页面里判断：`if (!invoice) { notFound(); }`，从 `next/navigation` 导入 `notFound`。它会中断当前渲染，并去找**最近的** `not-found.tsx` 来显示。",
-        "在 `app/dashboard/invoices/[id]/edit/` 目录下新建 `not-found.tsx`，返回一段简单内容，例如 `<p>Invoice not found.</p>`（课程也提到它可以渲染得更讲究些）。",
+        "在 `app/dashboard/invoices/[id]/edit/` 目录下新建 `app/dashboard/invoices/[id]/edit/not-found.tsx`，返回一段简单内容，例如 `<p>Invoice not found.</p>`（课程也提到它可以渲染得更讲究些）。",
         "优先级要记住：**`notFound()` 的优先级高于 `error.tsx`**。也就是说，调用了 `notFound()` 时，即使外层有 `error.tsx`，也会走 404 分支 —— 这是好事，因为「不存在」不是系统故障。",
       ],
       code:

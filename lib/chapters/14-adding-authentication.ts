@@ -76,7 +76,7 @@ export const chapter14: Chapter = {
       title: "登录表单：useActionState + callbackUrl",
       why: "把错误显示出来、把「你从哪来」记住，登录体验才算完整。",
       explain: [
-        "在 `login-form.tsx`（客户端组件）里：`const [errorMessage, formAction, isPending] = useActionState(authenticate, undefined);`，表单用 `<form action={formAction}>`。",
+        "在 `app/ui/login-form.tsx`（客户端组件）里：`const [errorMessage, formAction, isPending] = useActionState(authenticate, undefined);`，表单用 `<form action={formAction}>`。",
         "用 `useSearchParams()` 读取 `callbackUrl`，并放进一个隐藏字段：`<input type=\"hidden\" name=\"callbackUrl\" value={searchParams.get('callbackUrl') || '/dashboard'} />`。这样用户被踢到登录页时能记住原目标，登录后回到那个页面。",
         "错误显示用一个带 `aria-live=\"polite\"` 的区域；提交按钮在 `isPending` 时显示转圈图标 —— 这些你在第 13 章都已经练过了。",
       ],
@@ -88,16 +88,16 @@ export const chapter14: Chapter = {
       title: "保护路由：用 Proxy（旧称 middleware）",
       why: "认证不是只在登录页做一件事，而是要在「每个受保护请求」上都拦一道。",
       explain: [
-        "在**项目根目录**创建 `proxy.ts`（Next.js 16 里的新名字；老版本叫 `middleware.ts`）。它大致是：`export const proxy = auth;`（把 Auth.js 的 `auth` 直接作为处理器），并通过 `export const config = { matcher: ['/((?!api|_next/static|_next/image|.*\\\\.png$).*)'] }` 之类的 matcher 声明要拦截哪些路径。",
+        "在**项目根目录**创建 `proxy.ts`（Next.js 16 里的新名字；老版本叫 middleware.ts）。它大致是：`export const proxy = auth;`（把 Auth.js 的 `auth` 直接作为处理器），并通过 `export const config = { matcher: ['/((?!api|_next/static|_next/image|.*\\\\.png$).*)'] }` 之类的 matcher 声明要拦截哪些路径。",
         "实际的重定向逻辑并不写在这里，而是写在 `auth.config.ts` 的 **`callbacks.authorized`** 里（前面配置那一步已经写好了）：判断「是否已登录」与「是否访问 dashboard」，未登录返回 `false`，Auth.js 就会重定向到 `pages.signIn` 配置的 `/login`。",
         "课程里还提到一个更细的用法：在页面里可以直接 `const session = await auth();`，按 `session?.user` 判断是否渲染某些内容（甚至做**基于角色的授权**）。这属于「页面级检查」，与 Proxy 的「请求级拦截」是互补的两层。",
-        "⚠️ **版本差异提醒**：旧文档与教程里写的是 `middleware.ts`，Next.js 16 已更名为 `proxy.ts`。按你安装的版本来写，别照抄旧教程。",
+        "⚠️ **版本差异提醒**：旧文档与教程里写的是 middleware.ts，Next.js 16 已更名为 `proxy.ts`。按你安装的版本来写，别照抄旧教程。",
       ],
       code:
         "// proxy.ts（项目根目录，Next.js 16 的写法）\nimport NextAuth from 'next-auth';\nimport { authConfig } from './auth.config';\n\nexport default NextAuth(authConfig).auth;\n\nexport const config = {\n  matcher: ['/((?!api|_next/static|_next/image|.*\\\\.png$).*)'],\n};",
       check: "登出状态下直接访问 `/dashboard`，会被自动重定向到 `/login`。",
       pitfalls: [
-        "文件名写错（在新版里写成 `middleware.ts`）可能导致拦截不生效，注意版本差异。",
+        "文件名写错（在新版里写成 middleware.ts）可能导致拦截不生效，注意版本差异。",
         "matcher 写得太宽会把静态资源也拦进去，影响性能；写得不对则可能连登录页都被保护，形成重定向死循环。",
       ],
     },
@@ -116,7 +116,7 @@ export const chapter14: Chapter = {
   ],
   tips: [
     "本章内容最多（涉及配置、Action、表单、路由保护四块），建议分两三次完成，不要一口气做完。",
-    "版本差异要留心：`middleware.ts` → `proxy.ts`；`useFormState` → `useActionState`；`next-auth@beta` 就是 Auth.js v5。遇到报错先确认自己装的是哪个版本。",
+    "版本差异要留心：middleware.ts → `proxy.ts`；`useFormState` → `useActionState`；`next-auth@beta` 就是 Auth.js v5。遇到报错先确认自己装的是哪个版本。",
     "⛔ 安全底线：`bcrypt`、`AUTH_SECRET`、数据库连接串都只在服务端使用，绝不能被客户端组件引用。",
   ],
 };

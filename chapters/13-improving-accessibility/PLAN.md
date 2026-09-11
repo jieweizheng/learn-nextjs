@@ -36,7 +36,7 @@ return <form action={formAction}>/* ... */</form>;
 
 ### 3. 服务端校验
 
-在 `actions.ts` 定义 `State` 类型，把 `parse` 换成 `safeParse`，校验失败时提前返回：
+在 `app/lib/actions.ts` 定义 `State` 类型，把 `parse` 换成 `safeParse`，校验失败时提前返回：
 
 ```ts
 export type State = {
@@ -84,7 +84,7 @@ export async function createInvoice(prevState: State, formData: FormData) {
 
 ### 5. 练习
 
-给其余字段补齐错误显示，并运行 `npm run lint` 检查 aria 用法；有精力再给 `edit-form.tsx` 也加上。
+给其余字段补齐错误显示，并运行 `npm run lint` 检查 aria 用法；有精力再给 `app/ui/invoices/edit-form.tsx` 也加上。
 
 ## 💡 提示 / 易错点
 

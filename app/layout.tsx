@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { inter } from '@/app/ui/fonts'
+import clsx from 'clsx'
 
 export const metadata: Metadata = {
   title: {
@@ -17,7 +19,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="zh-CN">
-      <body className="min-h-screen bg-slate-50 text-slate-900 antialiased">
+      <body className={clsx(
+          'min-h-screen bg-slate-50 text-slate-900 antialiased', 
+          inter.className
+        )}>
         {children}
       </body>
     </html>

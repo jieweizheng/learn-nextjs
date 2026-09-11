@@ -42,13 +42,13 @@ export const lusitana = Lusitana({
 
 ### 3. 练习：添加次字体
 
-在 `fonts.ts` 再加一个 `Lusitana`（包含 `400`、`700` 字重），应用到 `app/playground/page.tsx` 的 `<p>` 上
+在 `app/ui/fonts.ts` 再加一个 `Lusitana`（包含 `400`、`700` 字重），应用到 `app/playground/page.tsx` 的 `<p>` 上
 （课程里这一步改的是 starter 的首页，本项目 `app/page.tsx` 是清单主页不能改；同理，课程里取消 `<AcmeLogo />` 注释，
 你可以把 `AcmeLogo` 用到 `/playground` 页面上练手）。
 
 ### 4. 添加桌面端 hero 图
 
-图片素材已经在 `public/` 里了（`hero-desktop.png`、`hero-mobile.png`）。从 `next/image` 引入 `Image`，在 `app/playground/page.tsx` 添加 `hero-desktop.png`：
+图片素材已经在 `public/` 里了（`public/hero-desktop.png`、`public/hero-mobile.png`）。从 `next/image` 引入 `Image`，在 `app/playground/page.tsx` 添加 `hero-desktop.png`：
 
 ```tsx
 <Image
@@ -70,7 +70,7 @@ export const lusitana = Lusitana({
 - `next/font` 会在构建时下载字体并与静态资源一起托管，因此用户访问时**没有额外的字体网络请求**。
 - 不确定字体的可选字重？看编辑器的类型提示，或去 Google Fonts 查。
 - 本项目在 `app/layout.tsx` 里给 `<body>` 设了一套**系统字体栈**（`app/globals.css` 中），加上 `inter.className` 后会以 Inter 为准，这是正常的。
-- 练习写在 `app/playground/`；`public/` 里已经有 `hero-desktop.png`、`hero-mobile.png`、`customers/*.png` 等素材，直接用。
+- 练习写在 `app/playground/`；`public/` 里已经有 `public/hero-desktop.png`、`public/hero-mobile.png`、`customers/*.png` 等素材，直接用。
 
 ## ✅ 完成标准
 
