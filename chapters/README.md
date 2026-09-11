@@ -33,7 +33,7 @@
 - **练习代码写在哪**：第 2–3 章的小实验放 `app/playground/`（自己新建）；
   第 4 章起按官方路径放 `app/dashboard/`。
 - ⛔ **不要改工作台本体**：`app/page.tsx`（`/` 章节清单主页）、`app/chapters/[slug]/page.tsx`（章节详情页）、
-  以及 `components/`、`lib/chapters.ts` —— 它们是你的学习导航，改坏了就找不着北了。
+  以及 `components/`、`lib/chapters/` —— 它们是你的学习导航与讲解内容，改坏了就找不着北了。
 - **Tailwind 版本差异**：本项目是 **v4**（`app/globals.css` 里 `@import "tailwindcss";`），
   官方文档是 **v3**。工具类基本通用；课程 starter 自定义的 Vercel 蓝与骨架屏 `shimmer` 动画，
   已用 v4 的 `@theme` / `@keyframes` 等价写进 `app/globals.css`，文档里「改 `tailwind.config.ts`」的步骤在本项目请改那里。

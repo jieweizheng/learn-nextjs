@@ -3,6 +3,8 @@
 > 英文标题：Fetching Data
 > 官方文档：https://nextjs.org/learn/dashboard-app/fetching-data
 > 本章目录：`chapters/07-fetching-data/`
+> 📚 **知识点与详细讲解**：`lib/chapters/07-fetching-data.ts`（章节页 `/chapters/fetching-data` 渲染的就是它，每项都可勾选）。
+> 引导用户时请按该文件里的知识点**逐条展开讲解**（含示例代码、自检标准、常见坑），**不要只说「去看官方文档」** —— 见 `AGENTS.md` 规则 3、4。
 
 在 Server Component 里直接用 SQL 查询数据库，为 dashboard 首页取数，并认识请求瀑布。
 

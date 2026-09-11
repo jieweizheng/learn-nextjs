@@ -3,6 +3,8 @@
 > 英文标题：Adding Search and Pagination
 > 官方文档：https://nextjs.org/learn/dashboard-app/adding-search-and-pagination
 > 本章目录：`chapters/10-adding-search-and-pagination/`
+> 📚 **知识点与详细讲解**：`lib/chapters/10-adding-search-and-pagination.ts`（章节页 `/chapters/adding-search-and-pagination` 渲染的就是它，每项都可勾选）。
+> 引导用户时请按该文件里的知识点**逐条展开讲解**（含示例代码、自检标准、常见坑），**不要只说「去看官方文档」** —— 见 `AGENTS.md` 规则 3、4。
 
 用 URL 查询参数实现搜索与分页，掌握 `useSearchParams` / `usePathname` / `useRouter`。
 

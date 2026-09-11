@@ -3,6 +3,8 @@
 > 英文标题：Static and Dynamic Rendering
 > 官方文档：https://nextjs.org/learn/dashboard-app/static-and-dynamic-rendering
 > 本章目录：`chapters/08-static-and-dynamic-rendering/`
+> 📚 **知识点与详细讲解**：`lib/chapters/08-static-and-dynamic-rendering.ts`（章节页 `/chapters/static-and-dynamic-rendering` 渲染的就是它，每项都可勾选）。
+> 引导用户时请按该文件里的知识点**逐条展开讲解**（含示例代码、自检标准、常见坑），**不要只说「去看官方文档」** —— 见 `AGENTS.md` 规则 3、4。
 
 理解静态渲染与动态渲染的差异，并亲眼看到慢请求如何拖慢整页。
 

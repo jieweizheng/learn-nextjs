@@ -3,6 +3,8 @@
 > 英文标题：Optimizing Fonts and Images
 > 官方文档：https://nextjs.org/learn/dashboard-app/optimizing-fonts-images
 > 本章目录：`chapters/03-optimizing-fonts-images/`
+> 📚 **知识点与详细讲解**：`lib/chapters/03-optimizing-fonts-images.ts`（章节页 `/chapters/optimizing-fonts-images` 渲染的就是它，每项都可勾选）。
+> 引导用户时请按该文件里的知识点**逐条展开讲解**（含示例代码、自检标准、常见坑），**不要只说「去看官方文档」** —— 见 `AGENTS.md` 规则 3、4。
 
 用 `next/font` 添加自定义字体、用 `next/image` 添加响应式图片，理解 Next.js 的优化机制。
 

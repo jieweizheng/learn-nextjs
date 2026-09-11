@@ -3,6 +3,8 @@
 > 英文标题：Setting Up Your Database
 > 官方文档：https://nextjs.org/learn/dashboard-app/setting-up-your-database
 > 本章目录：`chapters/06-setting-up-your-database/`
+> 📚 **知识点与详细讲解**：`lib/chapters/06-setting-up-your-database.ts`（章节页 `/chapters/setting-up-your-database` 渲染的就是它，每项都可勾选）。
+> 引导用户时请按该文件里的知识点**逐条展开讲解**（含示例代码、自检标准、常见坑），**不要只说「去看官方文档」** —— 见 `AGENTS.md` 规则 3、4。
 
 > 📌 本章要用的 `app/seed/route.ts`、`app/query/route.ts`、`app/lib/data.ts` **已经都在项目里了**，
 > 它们依赖的 `bcrypt` / `postgres` 也已安装 —— 直接按官方步骤做即可，不用自己造这些文件。

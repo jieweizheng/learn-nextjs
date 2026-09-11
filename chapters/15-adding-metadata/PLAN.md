@@ -3,6 +3,8 @@
 > 英文标题：Adding Metadata
 > 官方文档：https://nextjs.org/learn/dashboard-app/adding-metadata
 > 本章目录：`chapters/15-adding-metadata/`
+> 📚 **知识点与详细讲解**：`lib/chapters/15-adding-metadata.ts`（章节页 `/chapters/adding-metadata` 渲染的就是它，每项都可勾选）。
+> 引导用户时请按该文件里的知识点**逐条展开讲解**（含示例代码、自检标准、常见坑），**不要只说「去看官方文档」** —— 见 `AGENTS.md` 规则 3、4。
 
 用 Metadata API 配置标题、描述、Open Graph 与 favicon，优化 SEO 与分享效果。
 

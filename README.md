@@ -40,9 +40,13 @@ npm run dev
 │   ├── layout.tsx
 │   └── globals.css              # Tailwind v4 + 课程主题（@theme / shimmer）
 ├── public/                      # ⭐ 课程图片素材（hero、客户头像）+ favicon
-├── components/                  # 工作台交互组件（打勾、笔记）
-├── lib/chapters.ts              # 16 章数据（标题/链接/目标/步骤）
-├── chapters/                    # ⭐ 每章的学习计划
+├── components/                  # 工作台交互组件（章节打勾、知识点勾选与讲解渲染、行内代码）
+├── lib/chapters/                # 16 章数据与知识点讲解（单一来源）
+│   ├── types.ts                 #   Chapter / KnowledgePoint 类型
+│   ├── 01-getting-started.ts    #   每章一个文件：知识点 + 讲解 + 代码 + 自检 + 常见坑
+│   ├── ...
+│   └── index.ts                 #   汇总导出 chapters 与若干工具函数
+├── chapters/                    # ⭐ 每章的学习计划（引导大纲，与上面一一对应）
 │   ├── 01-getting-started/PLAN.md
 │   ├── 02-css-styling/PLAN.md
 │   ├── ...

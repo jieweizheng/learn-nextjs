@@ -1,8 +1,8 @@
 import ChapterChecklist from "@/components/chapter-checklist";
-import { chapters } from "@/lib/chapters";
+import { chapters, totalKnowledgePoints } from "@/lib/chapters";
 
 export default function Page() {
-  const totalSteps = chapters.reduce((sum, c) => sum + c.steps.length, 0);
+  const totalPoints = totalKnowledgePoints();
 
   return (
     <main className="mx-auto max-w-4xl px-6 py-12">
@@ -16,8 +16,10 @@ export default function Page() {
         </h1>
         <p className="mt-4 max-w-2xl text-base leading-relaxed text-slate-600">
           这里是你的学习工作台。从 React 出发，跟着官方课程一步步构建一个完整的
-          Dashboard 应用。每章都有清晰的学习计划，AI 助手会
-          <b className="text-slate-900">引导</b>你自己动手完成——
+          Dashboard 应用。每章都拆成一份<b className="text-slate-900">知识点清单</b>，
+          每一项都写好了<b className="text-slate-900">具体讲解</b>
+          （含示例代码、自检标准与常见坑）——
+          你可以自己读着做，也可以让 AI 助手一次讲一个知识点，
           代码你自己写，命令你自己跑，它只负责讲解、提醒和陪你排错。
         </p>
         <div className="mt-5 flex flex-wrap gap-3 text-sm text-slate-500">
@@ -25,7 +27,7 @@ export default function Page() {
             {chapters.length} 个章节
           </span>
           <span className="rounded-full bg-white px-3 py-1 shadow-sm ring-1 ring-slate-200">
-            约 {totalSteps} 个步骤
+            {totalPoints} 个知识点
           </span>
           <span className="rounded-full bg-white px-3 py-1 shadow-sm ring-1 ring-slate-200">
             App Router + TypeScript

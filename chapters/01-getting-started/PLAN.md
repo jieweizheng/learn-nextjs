@@ -3,6 +3,8 @@
 > 英文标题：Getting Started
 > 官方文档：https://nextjs.org/learn/dashboard-app/getting-started
 > 本章目录：`chapters/01-getting-started/`
+> 📚 **知识点与详细讲解**：`lib/chapters/01-getting-started.ts`（章节页 `/chapters/getting-started` 渲染的就是它，每项都可勾选）。
+> 引导用户时请按该文件里的知识点**逐条展开讲解**（含示例代码、自检标准、常见坑），**不要只说「去看官方文档」** —— 见 `AGENTS.md` 规则 3、4。
 
 认识项目目录结构、把开发服务器跑起来，并了解课程使用的 TypeScript 与「占位数据」。
 

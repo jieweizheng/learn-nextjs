@@ -3,6 +3,8 @@
 > 英文标题：Creating Layouts and Pages
 > 官方文档：https://nextjs.org/learn/dashboard-app/creating-layouts-and-pages
 > 本章目录：`chapters/04-creating-layouts-and-pages/`
+> 📚 **知识点与详细讲解**：`lib/chapters/04-creating-layouts-and-pages.ts`（章节页 `/chapters/creating-layouts-and-pages` 渲染的就是它，每项都可勾选）。
+> 引导用户时请按该文件里的知识点**逐条展开讲解**（含示例代码、自检标准、常见坑），**不要只说「去看官方文档」** —— 见 `AGENTS.md` 规则 3、4。
 
 用「文件夹即路由」的方式创建 dashboard 页面，并做一个可共享的嵌套布局。
 

@@ -3,6 +3,8 @@
 > 英文标题：Streaming
 > 官方文档：https://nextjs.org/learn/dashboard-app/streaming
 > 本章目录：`chapters/09-streaming/`
+> 📚 **知识点与详细讲解**：`lib/chapters/09-streaming.ts`（章节页 `/chapters/streaming` 渲染的就是它，每项都可勾选）。
+> 引导用户时请按该文件里的知识点**逐条展开讲解**（含示例代码、自检标准、常见坑），**不要只说「去看官方文档」** —— 见 `AGENTS.md` 规则 3、4。
 
 用 `loading.tsx` 与 `<Suspense>` 把页面拆成小块流式发送，配合骨架屏改善加载体验。
 

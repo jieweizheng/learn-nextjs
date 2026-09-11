@@ -3,6 +3,8 @@
 > 英文标题：Improving Accessibility
 > 官方文档：https://nextjs.org/learn/dashboard-app/improving-accessibility
 > 本章目录：`chapters/13-improving-accessibility/`
+> 📚 **知识点与详细讲解**：`lib/chapters/13-improving-accessibility.ts`（章节页 `/chapters/improving-accessibility` 渲染的就是它，每项都可勾选）。
+> 引导用户时请按该文件里的知识点**逐条展开讲解**（含示例代码、自检标准、常见坑），**不要只说「去看官方文档」** —— 见 `AGENTS.md` 规则 3、4。
 
 做客户端与服务端表单校验，用 `useActionState` 显示错误，并加上无障碍的 aria 属性。
 
