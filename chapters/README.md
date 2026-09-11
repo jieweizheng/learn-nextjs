@@ -22,3 +22,21 @@
 | 16 | [16-next-steps](./16-next-steps/PLAN.md) | 下一步 |
 
 > 官方课程地址：https://nextjs.org/learn/dashboard-app
+
+## 🧪 练习环境（重要）
+
+**本项目 `learn-nextjs` 本身就是课程练习场**，不需要再建 `nextjs-dashboard`：
+
+- ✅ **前置准备已经全部完成**：课程素材（`app/ui/**`、`app/lib/**`、`app/seed`、`app/query`、`public/*.png`、`.env.example`）
+  与所需依赖（`clsx`、`@heroicons/react`、`postgres`、`bcrypt`、`@tailwindcss/forms`）都已就位，
+  你只需 `npm install && npm run dev`。详情见 [01-getting-started/PLAN.md](./01-getting-started/PLAN.md)。
+- **练习代码写在哪**：第 2–3 章的小实验放 `app/playground/`（自己新建）；
+  第 4 章起按官方路径放 `app/dashboard/`。
+- ⛔ **不要改工作台本体**：`app/page.tsx`（`/` 章节清单主页）、`app/chapters/[slug]/page.tsx`（章节详情页）、
+  以及 `components/`、`lib/chapters.ts` —— 它们是你的学习导航，改坏了就找不着北了。
+- **Tailwind 版本差异**：本项目是 **v4**（`app/globals.css` 里 `@import "tailwindcss";`），
+  官方文档是 **v3**。工具类基本通用；课程 starter 自定义的 Vercel 蓝与骨架屏 `shimmer` 动画，
+  已用 v4 的 `@theme` / `@keyframes` 等价写进 `app/globals.css`，文档里「改 `tailwind.config.ts`」的步骤在本项目请改那里。
+- ⚠️ `app/lib/data.ts`（依赖 `postgres`）与 `app/seed/route.ts`（依赖 `bcrypt`）已在位、依赖已装，
+  但**第 6 章配好数据库前不要访问 `/seed`**，会报数据库连接错误。
+- 想额外练一遍 `create-next-app`，请在 `D:\learn-nextjs` **外面**另建项目；主线仍在本仓库内推进。

@@ -1,4 +1,24 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/forms";
+
+/* ------------------------------------------------------------------
+   以下两块是「官方课程 starter 的 tailwind.config.ts」在 Tailwind v4 下的等价写法。
+   starter 用的是 Tailwind v3 + config 文件；本项目用 v4，主题写在 CSS 里。
+   目的：让 app/ui 里搬进来的课程组件（蓝色按钮、骨架屏 shimmer）渲染正常。
+   ------------------------------------------------------------------ */
+@theme {
+  /* starter 里自定义的 Vercel 蓝 */
+  --color-blue-400: #2589fe;
+  --color-blue-500: #0070f3;
+  --color-blue-600: #2f6feb;
+}
+
+/* starter 里 shimmer 关键帧，供 skeletons.tsx 的 animate-[shimmer_2s_infinite] 使用 */
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
 
 :root {
   color-scheme: light;

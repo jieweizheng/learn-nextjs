@@ -28,19 +28,26 @@ npm run dev
 
 ```
 .
-├── app/                         # 学习工作台（清单主页 + 章节详情页）
-│   ├── page.tsx                 # 主页：16 章清单 + 打勾 + 进度条
-│   ├── chapters/[slug]/page.tsx # 章节详情页：目标 + 步骤 + 笔记
+├── app/
+│   ├── page.tsx                 # 主页：16 章清单 + 打勾 + 进度条（⛔ 别改）
+│   ├── chapters/[slug]/page.tsx # 章节详情页：目标 + 步骤 + 笔记（⛔ 别改）
+│   ├── ui/                      # ⭐ 课程 UI 组件（卡片/表格/表单/侧边栏，已就位）
+│   ├── lib/                     # ⭐ 课程数据与工具（definitions/utils/data/placeholder-data）
+│   ├── seed/ query/             # ⭐ 课程的第 6 章播种与试查路由
+│   ├── playground/              # ⭐ 第 2–3 章的练手页（你自己建）
+│   ├── dashboard/               # ⭐ 第 4 章起按课程创建
 │   ├── not-found.tsx
 │   ├── layout.tsx
-│   └── globals.css
-├── components/                  # 交互组件（打勾、笔记）
+│   └── globals.css              # Tailwind v4 + 课程主题（@theme / shimmer）
+├── public/                      # ⭐ 课程图片素材（hero、客户头像）+ favicon
+├── components/                  # 工作台交互组件（打勾、笔记）
 ├── lib/chapters.ts              # 16 章数据（标题/链接/目标/步骤）
 ├── chapters/                    # ⭐ 每章的学习计划
 │   ├── 01-getting-started/PLAN.md
 │   ├── 02-css-styling/PLAN.md
 │   ├── ...
 │   └── 16-next-steps/PLAN.md
+├── .env.example                 # ⭐ 第 6 章连数据库时复制成 .env
 ├── AGENTS.md                    # ⭐ Agent 行为准则（只引导，不代劳）
 └── CLAUDE.md                    # 指向 AGENTS.md
 ```
@@ -68,6 +75,12 @@ npm run dev
 
 ## 说明
 
-- 本工作台是**学习辅助工具**，不包含课程要构建的 Dashboard 应用本体。
-  那个应用请按课程指引自行用 `create-next-app` 创建。
+- 本仓库**既是学习工作台，也是课程练习场**：不用另建 `nextjs-dashboard`，直接在这里动手。
+  课程 starter 的素材与依赖**已经全部准备好**，第 1 章的「✅ 前置准备」只做状态说明，不需要你操作。
+- 练习请写在 `app/playground/`（第 2–3 章）与 `app/dashboard/`（第 4 章起）。
+- 练习时**不要改动工作台本体**：`app/page.tsx`（清单主页）、`app/chapters/[slug]/page.tsx`（章节详情页）。
+- 本项目用 Tailwind **v4**；官方课程文档是 v3。课程 starter 的自定义配色与骨架屏动画已用 `@theme` / `@keyframes`
+  等价写进 `app/globals.css`，文档里「改 `tailwind.config.ts`」的步骤在本项目请改 `app/globals.css`。
+- `app/lib/data.ts`（依赖 `postgres`）与 `app/seed/route.ts`（依赖 `bcrypt`）已在位且依赖已装，
+  但**第 6 章配好数据库之前不要访问 `/seed`**。
 - 课程内容版权归 [Next.js 官方文档](https://nextjs.org/learn) 所有。

@@ -4,6 +4,11 @@
 > 官方文档：https://nextjs.org/learn/dashboard-app/setting-up-your-database
 > 本章目录：`chapters/06-setting-up-your-database/`
 
+> 📌 本章要用的 `app/seed/route.ts`、`app/query/route.ts`、`app/lib/data.ts` **已经都在项目里了**，
+> 它们依赖的 `bcrypt` / `postgres` 也已安装 —— 直接按官方步骤做即可，不用自己造这些文件。
+> 另外「推到 GitHub」推的是**整个工作台仓库**（工作台代码会一起部署，这是正常的）；
+> `.gitignore` 已忽略 `.env`，密钥不会被提交。
+
 把项目推到 GitHub、连上 Vercel，创建 Postgres 数据库并播种初始数据。
 
 ## 🎯 学习目标

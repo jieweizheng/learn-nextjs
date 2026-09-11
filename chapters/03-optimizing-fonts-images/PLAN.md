@@ -14,31 +14,39 @@
 
 ## 📋 步骤清单
 
-### 1. 创建字体文件
+### 1. 打开字体文件（已就绪，读懂它）
 
-在 `app/ui` 新建 `fonts.ts`：
+`app/ui/fonts.ts` 已经准备好（`app/ui` 里有 7 个组件引用它，所以前置准备阶段就补上了）。
+打开它，对照官方文档理解每一行：
 
 ```ts
-import { Inter } from 'next/font/google';
+import { Inter, Lusitana } from 'next/font/google';
 
 export const inter = Inter({ subsets: ['latin'] });
+
+export const lusitana = Lusitana({
+  subsets: ['latin'],
+  weight: ['400', '700'],
+});
 ```
 
 ### 2. 在根布局应用主字体
 
-在 `app/layout.tsx` 引入 `inter`，把 `inter.className` 和 `antialiased` 加到 `<body>` 上，字体将全局生效：
+在 `app/layout.tsx` 引入 `inter`，把 `inter.className` 加到 `<body>` 的 `className` 上（本项目原有的 `antialiased` 等类保留），字体将全局生效：
 
 ```tsx
-<body className={`${inter.className} antialiased`}>{children}</body>
+<body className={`${inter.className} antialiased ...原有类名...`}>{children}</body>
 ```
 
 ### 3. 练习：添加次字体
 
-在 `fonts.ts` 再加一个 `Lusitana`（包含 `400`、`700` 字重），应用到 `app/page.tsx` 的 `<p>` 上；并把被注释的 `<AcmeLogo />` 取消注释。
+在 `fonts.ts` 再加一个 `Lusitana`（包含 `400`、`700` 字重），应用到 `app/playground/page.tsx` 的 `<p>` 上
+（课程里这一步改的是 starter 的首页，本项目 `app/page.tsx` 是清单主页不能改；同理，课程里取消 `<AcmeLogo />` 注释，
+你可以把 `AcmeLogo` 用到 `/playground` 页面上练手）。
 
 ### 4. 添加桌面端 hero 图
 
-从 `next/image` 引入 `Image`，在 `app/page.tsx` 添加 `hero-desktop.png`：
+图片素材已经在 `public/` 里了（`hero-desktop.png`、`hero-mobile.png`）。从 `next/image` 引入 `Image`，在 `app/playground/page.tsx` 添加 `hero-desktop.png`：
 
 ```tsx
 <Image
@@ -59,10 +67,12 @@ export const inter = Inter({ subsets: ['latin'] });
 - `<Image>` 的 `width` / `height` 要与**源图比例一致**，它用于避免布局偏移，而不是最终显示尺寸。
 - `next/font` 会在构建时下载字体并与静态资源一起托管，因此用户访问时**没有额外的字体网络请求**。
 - 不确定字体的可选字重？看编辑器的类型提示，或去 Google Fonts 查。
+- 本项目在 `app/layout.tsx` 里给 `<body>` 设了一套**系统字体栈**（`app/globals.css` 中），加上 `inter.className` 后会以 Inter 为准，这是正常的。
+- 练习写在 `app/playground/`；`public/` 里已经有 `hero-desktop.png`、`hero-mobile.png`、`customers/*.png` 等素材，直接用。
 
 ## ✅ 完成标准
 
-- [ ] 首页使用 Inter 字体，`<p>` 使用 Lusitana
+- [ ] 字体：全局用 Inter，`/playground` 的 `<p>` 用 Lusitana
 - [ ] 桌面端与移动端分别显示各自的 hero 图
 - [ ] 能用自己的话解释字体 / 图片优化带来的好处
 

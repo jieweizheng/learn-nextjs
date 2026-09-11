@@ -36,45 +36,35 @@ export const chapters: Chapter[] = [
     titleZh: "快速上手",
     officialUrl: "https://nextjs.org/learn/dashboard-app/getting-started",
     summary:
-      "用官方 starter 模板创建 dashboard 项目，认识目录结构并把它跑起来。",
+      "认识项目目录结构、把开发服务器跑起来，并了解课程使用的 TypeScript 与占位数据。",
     goals: [
-      "用 create-next-app 创建课程项目",
-      "认识 /app、/app/lib、/app/ui、/public 各自负责什么",
-      "会启动开发服务器并访问 localhost:3000",
+      "认识 /app、/app/ui、/app/lib、/public 各自负责什么",
+      "会启动开发服务器并访问（3000 被占用会回退到 3001）",
       "了解课程使用 TypeScript 与占位数据",
     ],
     steps: [
       {
-        title: "创建项目",
-        detail:
-          "在你想放项目的目录下，用课程提供的 starter 模板创建 nextjs-dashboard。文档默认用 pnpm，本项目统一用 npm，保持一种包管理器即可。",
-        code: 'npx create-next-app@latest nextjs-dashboard --example "https://github.com/vercel/next-learn/tree/main/dashboard/starter-example" --use-npm',
-      },
-      {
-        title: "进入目录并安装依赖",
-        detail: "进入刚创建的项目目录，安装依赖。",
-        code: "cd nextjs-dashboard\nnpm install",
-      },
-      {
         title: "启动开发服务器",
         detail:
-          "启动后访问 http://localhost:3000，你会看到一个（故意没有样式的）首页。",
+          "在项目根运行 npm run dev，访问终端打印出来的地址。官方文档里那个「故意没有样式」的首页，在本项目里换成了章节清单主页。",
         code: "npm run dev",
       },
       {
         title: "探索目录结构",
         detail:
-          "打开编辑器，依次认识：/app（路由、组件与逻辑）、/app/lib（工具与取数函数）、/app/ui（预置好的 UI 组件）、/public（静态资源），以及根目录的 next.config.ts 等配置文件。",
+          "依次认识：app/（路由与页面）、app/ui/（UI 组件）、app/lib/（工具与取数函数，如 placeholder-data.ts、definitions.ts）、public/（静态资源），以及工作台自身的 components/ 与 lib/chapters.ts。练习统一写在 app/playground/（第 2–3 章）或 app/dashboard/（第 4 章起），不要改动工作台主页 / 与 /chapters/[slug]。",
       },
       {
         title: "读两个关键文件",
         detail:
-          "打开 app/lib/placeholder-data.ts（占位数据，第 6 章会用它播种数据库）和 app/lib/definitions.ts（数据库返回值的 TypeScript 类型定义）。",
+          "打开 app/lib/placeholder-data.ts（占位数据，第 6 章会用它播种数据库）和 app/lib/definitions.ts（数据库返回值的 TypeScript 类型定义，如 Invoice）。",
       },
     ],
     tips: [
-      "不用纠结看不懂的代码：课程大部分代码已经写好，重点是理解 Next.js 的特性。",
-      "全程使用同一种包管理器，避免出现多个 lockfile。",
+      "✅ 本项目的一次性准备已经全部做好了（starter 素材已搬入、clsx / @heroicons/react / postgres / bcrypt / @tailwindcss/forms 已装好），你只要在项目根跑 npm install && npm run dev 就能开工。",
+      "3000 端口常被别的进程占用，npm run dev 会自动回退到 3001，以终端打印的地址为准。",
+      "本项目是 Tailwind v4，官方文档是 v3。课程 starter 自定义的 Vercel 蓝与骨架屏 shimmer 动画，已用 v4 的 @theme / @keyframes 等价写进 app/globals.css；文档里「改 tailwind.config.ts」的步骤在本项目请改 app/globals.css。",
+      "app/lib/data.ts 依赖 postgres、app/seed/route.ts 依赖 bcrypt，都已安装；但第 6 章配好数据库前不要访问 /seed 或调用取数函数，会报连接错误。",
     ],
   },
   {
@@ -86,34 +76,34 @@ export const chapters: Chapter[] = [
     summary:
       "用全局样式 + Tailwind + CSS Modules 给应用加样式，并用 clsx 做条件类名。",
     goals: [
-      "在根布局引入全局 CSS",
+      "看清全局 CSS 是怎么接到根布局上的（本项目已就绪）",
       "用 Tailwind 工具类写样式",
       "用 CSS Modules 做组件级作用域样式",
       "用 clsx 按状态切换类名",
     ],
     steps: [
       {
-        title: "引入全局样式",
-        detail:
-          "打开 app/layout.tsx，在顶部 import '@/app/ui/global.css'。保存后首页就有样式了——样式来自 global.css 里的 Tailwind 指令。",
-      },
-      {
         title: "认识 Tailwind",
         detail:
-          "global.css 中的 @tailwind base/components/utilities 就是 Tailwind。给元素加类名即可写样式，例如 text-blue-500。试着在 app/page.tsx 里用 border 类拼出一个三角形。",
+          "给元素加类名即可写样式，例如 text-blue-500。先新建练习页 app/playground/page.tsx（不要改 app/page.tsx，那是工作台的清单主页），再用 border 类拼出一个三角形。",
       },
       {
         title: "改用 CSS Modules",
         detail:
-          "在 app/ui 新建 home.module.css，写入 .shape 规则，然后在 page.tsx 用 styles.shape 替换 Tailwind 类名，效果保持一致。",
+          "自己在 app/playground/ 新建 pg.module.css 写一个 .shape 规则，再用 styles.shape 替换 Tailwind 类名，效果保持一致。",
       },
       {
         title: "用 clsx 切换类名",
         detail:
-          "查看 app/ui/invoices/status.tsx，它用 clsx 根据 status（pending / paid）条件应用类名。",
+          "查看 app/ui/invoices/status.tsx，它用 clsx 根据 status（pending / paid）条件应用类名（clsx 已安装）。",
       },
     ],
-    tips: ["Tailwind 与 CSS Modules 可以并存，按个人偏好选择即可。"],
+    tips: [
+      "📌 本项目已在 app/layout.tsx 里 import \"./globals.css\"，样式本来就生效 —— 官方文档的「引入全局样式」这一步在你这里只需看懂，不必动手。",
+      "本项目是 Tailwind v4（app/globals.css 里是 @import \"tailwindcss\"），官方文档是 v3（@tailwind base/components/utilities）；照文档写 v3 的 @tailwind 指令在本项目不生效。",
+      "CSS Modules 文件名必须以 *.module.css 结尾，否则不会生成唯一类名。",
+      "练习写在 app/playground/，不要改工作台的 /（清单主页）。",
+    ],
   },
   {
     num: 3,
@@ -131,25 +121,25 @@ export const chapters: Chapter[] = [
     ],
     steps: [
       {
-        title: "创建字体文件",
+        title: "打开字体文件",
         detail:
-          "在 app/ui 新建 fonts.ts，从 next/font/google 引入 Inter 并导出 inter（subsets: ['latin']）。",
+          "素材带来的 app/ui/fonts.ts 就是它，打开确认内容：从 next/font/google 引入 Inter 并导出 inter（subsets: ['latin']）。",
         code: "import { Inter } from 'next/font/google';\nexport const inter = Inter({ subsets: ['latin'] });",
       },
       {
         title: "在根布局应用主字体",
         detail:
-          "在 app/layout.tsx 引入 inter，把 inter.className 和 antialiased 加到 <body>，字体将全局生效。",
+          "在 app/layout.tsx 引入 inter，把 inter.className 加到 <body> 的 className 上（原有类名保留），字体将全局生效。",
       },
       {
         title: "练习：添加次字体",
         detail:
-          "在 fonts.ts 再加 Lusitana（含 400 / 700 字重），应用到 app/page.tsx 的 <p> 上；并把 <AcmeLogo /> 取消注释。",
+          "在 fonts.ts 再加 Lusitana（含 400 / 700 字重），应用到 app/playground/page.tsx 的 <p> 上 —— 课程原本改的是 starter 的首页，本项目的 app/page.tsx 是清单主页，不能改。",
       },
       {
         title: "添加桌面端 hero 图",
         detail:
-          "从 next/image 引入 Image，在 app/page.tsx 添加 hero-desktop.png，width=1000、height=760，类名用 hidden md:block。",
+          "从 next/image 引入 Image，在 app/playground/page.tsx 添加 hero-desktop.png，width=1000、height=760，类名用 hidden md:block。",
       },
       {
         title: "练习：添加移动端 hero 图",
@@ -159,6 +149,7 @@ export const chapters: Chapter[] = [
     ],
     tips: [
       "<Image> 的 width/height 要与源图比例一致，它用于避免布局偏移，而不是最终显示尺寸。",
+      "练习写在 app/playground/；public/ 里已经有 hero-desktop.png、hero-mobile.png、customers/*.png 等素材，直接用。",
     ],
   },
   {
