@@ -2,12 +2,13 @@
 
 import { useEffect, useState } from "react";
 import InlineText from "@/components/inline-text";
+import CodeBlock from "@/components/code-block";
 import { notesStorageKey, pointsStorageKey } from "@/lib/storage-keys";
 import type { KnowledgePoint } from "@/lib/chapters";
 
 /**
  * 知识点清单：每一项都可勾选（进度存 localStorage），
- * 并带具体讲解、示例代码、自检标准与常见坑。
+ * 并带具体讲解、示例代码（可一键复制）、自检标准与常见坑。
  */
 export default function ChapterSteps({
   slug,
@@ -170,11 +171,7 @@ export default function ChapterSteps({
                   </p>
                 ))}
 
-                {point.code ? (
-                  <pre className="overflow-x-auto rounded-xl bg-slate-900 p-4 text-xs leading-relaxed text-slate-100">
-                    <code>{point.code}</code>
-                  </pre>
-                ) : null}
+                {point.code ? <CodeBlock code={point.code} /> : null}
 
                 {point.check ? (
                   <p className="rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-900">

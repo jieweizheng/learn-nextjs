@@ -95,7 +95,7 @@ export const chapter13: Chapter = {
     },
   ],
   tips: [
-    "本章的模式可以概括为：**服务端 zod `safeParse` 返回错误 → `useActionState` 接管状态 → 界面用 `aria-*` 把错误讲清楚**。",
+    "本章的模式可以概括为：**服务端 zod `safeParse` 返回错误 → `useActionState` 接管状态 → 界面用 `aria-` 系列属性把错误讲清楚**。",
     "无障碍不是额外的负担：语义化的 HTML + 明确的反馈，既帮助了辅助技术用户，也让所有用户在出错时更清楚发生了什么。",
   ],
 };

@@ -98,7 +98,7 @@
 | `lib/chapters/` | **16 章数据与知识点讲解**（单一来源）：`types.ts` + 每章一个 `NN-<slug>.ts` + `index.ts` |
 | `chapters/<编号-名称>/PLAN.md` | 每一章的学习计划（引导大纲），与 `lib/chapters/` 中的知识点一一对应 |
 | `components/` | 工作台交互组件：章节打勾、知识点打勾与讲解渲染、笔记、行内代码与**可点击文件路径** |
-| `lib/editor-links.ts` 等 | 「文件跳转」：路径识别、编辑器协议 URL、项目根目录、编辑器偏好 |
+| `lib/editor-links.ts` 等 | 「文件跳转」：路径识别、编辑器协议 URL、项目根目录、路径是否存在（`lib/detect-editor.ts` / `lib/file-exists.ts` / `app/api/editor` / `app/api/paths`） |
 | `app/playground/` | 第 2–3 章的实验区（用户自建） |
 | `app/dashboard/` | 第 4 章起按官方路径创建的课程应用（用户自建） |
 | `AGENTS.md` / `CLAUDE.md` | 就是本文件，Agent 规则 |
@@ -110,6 +110,14 @@
 > `` `app/lib/definitions.ts` ``、`` `chapters/06-setting-up-your-database/PLAN.md` ``。
 > 页面会把它渲染成可点击链接（点一下在用户的编辑器里打开）；只写 `page.tsx` 这种裸文件名不会成为链接，
 > 因为无法判断是哪个目录下的文件。
+>
+> ⚠️ **写进去的路径必须真的对得上项目**（这一点踩过坑）：
+> - 已经存在的文件 → 正常写，点一下就能跳转；用户还没创建的文件 → 会显示成灰色「待创建」，属正常。
+> - **本项目与官方 starter 不一致的地方，不能照抄官方路径**。典型例子：官方把全局样式表放在
+>   `app/ui/global.css`，本项目用的是 `app/globals.css`；官方 starter 的 `app/ui/home.module.css`
+>   本项目也没有。这类「本项目不存在的路径」请写成**普通文字（不加反引号）**并说明差异，
+>   否则页面会渲染出一个指向不存在文件的链接。
+> - 占位符（如「某个路由目录」）不要写成路径形状，否则同样会被当成真路径。
 
 ---
 

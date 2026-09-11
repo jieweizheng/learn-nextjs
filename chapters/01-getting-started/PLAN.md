@@ -61,7 +61,7 @@ npm run dev
 | `app/lib/` | ⭐ 课程的数据与工具函数（占位数据、类型定义、取数函数） |
 | `public/` | 静态资源（hero 图、头像等） |
 | `components/` | 工作台自己的交互组件（打勾、笔记） |
-| `lib/chapters.ts` | 本工作台的 16 章数据 |
+| `lib/chapters/` | 本工作台的 16 章数据与知识点讲解（`types.ts` + 每章一个 `NN-<slug>.ts` + `index.ts`） |
 | `chapters/**/PLAN.md` | 每章的学习计划（就是你在读的这种文件） |
 | `next.config.ts` | 配置文件（本课程基本不用改） |
 

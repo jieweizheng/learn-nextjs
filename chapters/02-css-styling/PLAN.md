@@ -20,7 +20,7 @@
 
 ## 🔗 关于「引入全局样式」（不属于步骤清单）
 
-本项目在 `app/layout.tsx` 顶部**已经**导入了 `./globals.css`，样式本来就生效：
+本项目在 `app/layout.tsx` 顶部**已经**导入了 `app/globals.css`，样式本来就生效：
 
 ```tsx
 import "./globals.css";
@@ -29,6 +29,12 @@ import "./globals.css";
 打开 `app/globals.css`，第一行 `@import "tailwindcss";` 就是 Tailwind。
 官方文档用的是 Tailwind v3 的 `@tailwind base; @tailwind components; @tailwind utilities;`，
 本项目是 v4，一行 `@import` 代替，作用相同 —— 所以这一步你**不用动任何代码**。
+
+> ⚠️ 官方 starter 把全局样式表放在 `app/ui/global.css`。**本项目没有这个文件**，
+> 对应物是 `app/globals.css`（Tailwind v4 主题也写在这里）。文档里出现 `app/ui/global.css` 时，
+> 在本项目一律按 `app/globals.css` 理解，别去项目里找那个不存在的路径。
+> 同样，官方 starter 的 `app/ui/home.module.css`（现成的 CSS Modules 示例）本项目也没搬过来，
+> 第 2 步的样式模块由**你自己写**。
 
 ## 📋 步骤清单
 
@@ -44,10 +50,14 @@ export default function Page() {
 }
 ```
 
-访问 http://localhost:3000/playground ，再用 `border-*` 类拼出一个三角形：
+访问 http://localhost:3000/playground ，再用 `border-*` 类拼出一个三角形（把组件 `return` 的内容换成这个 `div`）：
 
 ```tsx
-<div className="h-0 w-0 border-l-[15px] border-r-[15px] border-b-[26px] border-l-transparent border-r-transparent border-b-black" />
+export default function Page() {
+  return (
+    <div className="relative h-0 w-0 border-l-[15px] border-r-[15px] border-b-[26px] border-l-transparent border-r-transparent border-b-black" />
+  );
+}
 ```
 
 ### 2. 改用 CSS Modules
@@ -64,7 +74,8 @@ export default function Page() {
 }
 ```
 
-然后在 `app/playground/page.tsx` 里 `import styles from './pg.module.css'`，用 `styles.shape` 替换 Tailwind 类名，效果一致。
+然后在 `app/playground/page.tsx` 里导入这个样式模块（同目录写成 `import styles from "./pg.module.css"`），
+用 `styles.shape` 替换 Tailwind 类名，效果一致。
 
 ### 3. 用 clsx 切换类名
 
@@ -74,6 +85,8 @@ export default function Page() {
 ## 💡 提示 / 易错点
 
 - Tailwind 与 CSS Modules 可以并存，按个人偏好选择即可。
+- **页面文件必须默认导出组件**（`export default function Page()`）：只贴一段裸 JSX 会报
+  `Property 'default' is missing`；示例里的片段要放进组件的 `return (...)` 里面。
 - CSS Modules 会自动生成唯一类名，避免样式冲突；文件名**必须**写成 `*.module.css`。
 - 本项目是 Tailwind v4，官方文档是 v3。照文档写 v3 的 `@tailwind ...` 指令在本项目不生效 —— 以 `app/globals.css` 为准。
 - 练习写进 `app/playground/`，不要动工作台的 `/`（清单主页）。

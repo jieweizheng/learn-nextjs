@@ -19,7 +19,7 @@ export const chapter07: Chapter = {
       title: "取数的三条路：API 层 / ORM / 直接 SQL",
       why: "你以后写真实项目一定要做这个选择，先弄清朝向比记住 API 更重要。",
       explain: [
-        "**API 层**：自己写 Route Handler（`app/api/xxx/route.ts`），前端 fetch。优点是与前端解耦、便于对外复用；缺点是多一层维护，且服务端组件本就跑在服务端，再绕一圈 HTTP 往往没必要。",
+        "**API 层**：自己写 Route Handler（在 `app/api/` 下新建一个目录，里面放 `route.ts`），前端 fetch。优点是与前端解耦、便于对外复用；缺点是多一层维护，且服务端组件本就跑在服务端，再绕一圈 HTTP 往往没必要。",
         "**ORM**：Prisma、Drizzle 这类工具把表映射成对象，写 `db.invoice.findMany()` 而不用手写 SQL，类型安全、可迁移数据库；代价是多一层抽象与学习成本，复杂查询反而更难表达。",
         "**直接 SQL**：课程选这条 —— 用轻量的 `postgres.js` 直接写 SQL。理由是**看得见本质**（你能确切知道发了什么查询）、依赖少、性能可控，也便于理解连接池与类型映射这些真实概念。",
       ],
