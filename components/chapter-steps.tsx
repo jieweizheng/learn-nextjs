@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import InlineText from "@/components/inline-text";
 import CodeBlock from "@/components/code-block";
 import { notesStorageKey, pointsStorageKey } from "@/lib/storage-keys";
@@ -67,6 +67,47 @@ export default function ChapterSteps({
       next[i] = value;
     });
     setOpen(next);
+  }
+
+  /**
+   * 渲染讲解正文：普通字符串是段落；以「- 」开头的连续若干项合并成一个列表。
+   * 这样讲解里就能用列表把步骤拆开写，而不是挤在一段长句里。
+   */
+  function renderParagraphs(items: string[]) {
+    const out: ReactNode[] = [];
+    let bullets: string[] = [];
+
+    const flush = () => {
+      if (!bullets.length) return;
+      out.push(
+        <ul
+          key={`ul-${out.length}`}
+          className="ml-5 list-disc space-y-1 text-sm leading-relaxed text-slate-600"
+        >
+          {bullets.map((b, i) => (
+            <li key={i}>
+              <InlineText text={b} />
+            </li>
+          ))}
+        </ul>,
+      );
+      bullets = [];
+    };
+
+    items.forEach((item, i) => {
+      if (item.startsWith("- ")) {
+        bullets.push(item.slice(2));
+        return;
+      }
+      flush();
+      out.push(
+        <p key={`p-${i}`} className="text-sm leading-relaxed text-slate-600">
+          <InlineText text={item} />
+        </p>,
+      );
+    });
+    flush();
+    return out;
   }
 
   return (
@@ -142,7 +183,7 @@ export default function ChapterSteps({
                   {point.why ? (
                     <p className="mt-1 text-sm leading-relaxed text-slate-500">
                       <span className="font-medium text-slate-400">
-                        为什么要学：
+                        问题：
                       </span>
                       <InlineText text={point.why} />
                     </p>
@@ -165,14 +206,14 @@ export default function ChapterSteps({
                 hidden={!isOpen}
                 className="mt-3 space-y-3 border-l-2 border-slate-100 pl-4 sm:pl-6"
               >
-                {point.explain.map((paragraph, pi) => (
-                  <p
-                    key={pi}
-                    className="text-sm leading-relaxed text-slate-600"
-                  >
-                    <InlineText text={paragraph} />
+                {renderParagraphs(point.explain)}
+
+                {point.note ? (
+                  <p className="text-xs leading-relaxed text-slate-400">
+                    <span className="font-medium">背景：</span>
+                    <InlineText text={point.note} />
                   </p>
-                ))}
+                ) : null}
 
                 {point.code ? <CodeBlock code={point.code} /> : null}
 

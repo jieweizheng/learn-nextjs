@@ -44,35 +44,92 @@ export default async function Page() {
 }
 ```
 
-**这是两个独立的动作，别混为一谈：**
+`RevenueChart` 是**默认导出**（`import RevenueChart from ...`），`Card` 才是具名导出，别写反。
 
-| 动作 | 位置 | 作用 |
-| --- | --- | --- |
-| 取消注释 | `app/ui/dashboard/revenue-chart.tsx` 内部 | 让组件真的会把数据画成柱状图 |
-| 传数据 | `app/dashboard/page.tsx` 里 `<RevenueChart revenue={revenue} />` | 把查到的数据喂给组件 |
-
-只做前者页面依然没图表；只做后者图表区是空的。
-
-> starter 之所以把渲染代码注释掉，是因为前几章还没有 `fetchRevenue()`：
-> 那时打开会渲染出空图表区甚至报错，干扰第 4–6 章的学习 —— 留到本章才让你亲手打开。
-> `RevenueChart` 是**默认导出**（`import RevenueChart from ...`），`Card` 才是具名导出。
+> 弱提示：starter 之所以把渲染代码注释掉，是因为前几章还没有 `fetchRevenue()` ——
+> 那时打开会渲染出空图表区甚至报错，干扰第 4–6 章的学习，所以留到本章才让你亲手打开。
 
 ### 3. 为 LatestInvoices 取数
 
-再 `await fetchLatestInvoices()`，取消注释 `<LatestInvoices latestInvoices={latestInvoices} />` 及其内部代码，只显示最近 5 条发票。
+还是改 `app/dashboard/page.tsx`，在上一版基础上**加三处**：
+
+```tsx
+// ① 顶部补两条 import（LatestInvoices 同样是默认导出）
+import { fetchRevenue, fetchLatestInvoices } from '@/app/lib/data';
+import LatestInvoices from '@/app/ui/dashboard/latest-invoices';
+
+export default async function Page() {
+  const revenue = await fetchRevenue();
+  // ② 加这一行查询
+  const latestInvoices = await fetchLatestInvoices();
+
+  return (
+    <main>
+      <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-4 lg:grid-cols-8">
+        <RevenueChart revenue={revenue} />
+        {/* ③ 加这一段 */}
+        <LatestInvoices latestInvoices={latestInvoices} />
+      </div>
+    </main>
+  );
+}
+```
+
+再取消注释 `app/ui/dashboard/latest-invoices.tsx` 内部代码，只显示最近 5 条发票。
 
 ### 4. 练习：为 Card 取数
 
-用 `fetchCardData()`（返回发票 / 客户数量与金额）给四个 `<Card>` 取数并解构使用：
+用 `fetchCardData()`（返回发票 / 客户数量与金额）给四个 `<Card>` 取数并解构使用。
+**这一步做完，三块数据就齐了**，`app/dashboard/page.tsx` 的完整样子如下：
 
 ```tsx
-const {
-  numberOfInvoices,
-  numberOfCustomers,
-  totalPaidInvoices,
-  totalPendingInvoices,
-} = await fetchCardData();
+// app/dashboard/page.tsx —— 这一步结束后的完整页面
+import {
+  fetchRevenue,
+  fetchLatestInvoices,
+  fetchCardData,
+} from '@/app/lib/data';
+import RevenueChart from '@/app/ui/dashboard/revenue-chart';
+import LatestInvoices from '@/app/ui/dashboard/latest-invoices';
+import { Card } from '@/app/ui/dashboard/cards'; // Card 是具名导出
+
+export default async function Page() {
+  const revenue = await fetchRevenue();
+  const latestInvoices = await fetchLatestInvoices();
+  const {
+    numberOfInvoices,
+    numberOfCustomers,
+    totalPaidInvoices,
+    totalPendingInvoices,
+  } = await fetchCardData();
+
+  return (
+    <main>
+      <h1 className="mb-4 text-xl md:text-2xl">Dashboard</h1>
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <Card title="Collected" value={totalPaidInvoices} type="collected" />
+        <Card title="Pending" value={totalPendingInvoices} type="pending" />
+        <Card title="Total Invoices" value={numberOfInvoices} type="invoices" />
+        <Card title="Total Customers" value={numberOfCustomers} type="customers" />
+      </div>
+      <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-4 lg:grid-cols-8">
+        <RevenueChart revenue={revenue} />
+        <LatestInvoices latestInvoices={latestInvoices} />
+      </div>
+    </main>
+  );
+}
 ```
+
+> 弱提示：`fetchCardData` 内部用了 `Promise.all` 并发三条 SQL，但**它整体仍是页面里的第三个 `await`**。
+
+### 5. 请求瀑布：先认出这个问题（不用改代码）
+
+上面那个页面里三个 `await` 是**串行**的：每个都要等上一个完成，总耗时是三者之和；
+而且整页要等所有数据到齐才输出 HTML。这叫 **request waterfall（请求瀑布）**。
+
+本章不用修它 —— 第 9 章会用「取数下移到组件 + `<Suspense>`」来解决。
+现在只要求你能指出：当前页面的耗时 = ① + ② + ③，而不是三者里最慢的那个。
 
 ## 💡 提示 / 易错点
 

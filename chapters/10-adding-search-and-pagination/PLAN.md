@@ -35,11 +35,19 @@
 
 ### 5. 表格随查询更新
 
-在页面组件接收 `searchParams`（注意是 `Promise`，需要 `await`），取出 `query` / `currentPage` 传给 `<Table/>`，并用 `<Suspense key={query + currentPage}>` 包裹（key 变化时重新触发加载态）。
+起始骨架（第 1 步）已经读到了 `searchParams` 里的 `query` / `currentPage` 并传给了 `<Table/>`——所以这一步**不用再取这两个值**。唯一要加的是：用 `<Suspense key={query + currentPage}>` 把 `<Table/>` 包起来。`key` 随查询词或页码变化 → React 当成新边界 → 重新显示加载态，否则切换时用户以为「点了没反应」。
 
 ### 6. 加上分页
 
-用 `fetchInvoicesPages(query)` 得到 `totalPages` 传给 `<Pagination/>`；在分页组件里用 `usePathname` / `useSearchParams` 生成页码链接。
+**页面**：`const totalPages = await fetchInvoicesPages(query);`，把骨架里的 `<Pagination totalPages={1} />` 改成 `<Pagination totalPages={totalPages} />`。
+
+**`app/ui/invoices/pagination.tsx`**（重点，容易卡）：starter 把主组件那段 JSX 注释掉了，且注释里用到的 `currentPage` / `createPageURL` / `allPages` **还没定义**，直接取消注释会全是 `undefined`。补法：
+- 顶部导入 `usePathname, useSearchParams`（来自 `next/navigation`）
+- 组件开头 `const pathname = usePathname(); const searchParams = useSearchParams(); const currentPage = Number(searchParams.get('page')) || 1;`（**`currentPage` 从 URL 读，不是 props**，所以页面不用传）
+- 定义 `createPageURL`（复制现有参数、只改 `page`）
+- 取消注释 `allPages` 那行与整段 `<div className='inline-flex'>…</div>` JSX
+
+文件下方的 `PaginationNumber` / `PaginationArrow` 不用改；`generatePagination` 已在 `app/lib/utils.ts`。
 
 ### 7. 加防抖
 
