@@ -36,6 +36,8 @@ export async function createInvoice(formData: FormData) {}
 
 ### 3. 校验并准备数据
 
+先安装 zod（**钉 v3**，与课程一致）：`npm install zod@3`。Zod 4 移除了 `invalid_type_error`，课程代码会编译报错。
+
 用 zod schema 解析表单字段；金额转成分（`amount * 100`），生成 `YYYY-MM-DD` 日期：
 
 ```ts
@@ -58,7 +60,9 @@ redirect('/dashboard/invoices');
 
 ### 6. 编辑发票
 
-新建 `app/dashboard/invoices/[id]/edit/page.tsx`，用 `params` 取 `id`，用 `Promise.all` 并行获取发票与客户。
+新建 `app/dashboard/invoices/[id]/edit/page.tsx`：用 `params` 取 `id`（要 `await`），`Promise.all` 并行取 `fetchInvoiceById(id)` 与 `fetchCustomers()`，渲染 `<Breadcrumbs>` + `<Form invoice customers>`。
+在 `app/lib/actions.ts` 里加 `updateInvoice(id, formData)`（解析 → `UPDATE` → `revalidatePath` → `redirect`）。
+把 `app/ui/invoices/buttons.tsx` 里 `UpdateInvoice` 的 `href` 改成 `/dashboard/invoices/${id}/edit`（starter 是占位链接，否则点铅笔进不了编辑页）。
 用 `bind` 把 `id` 传给 Action，而不是直接传参：
 
 ```tsx
@@ -75,6 +79,7 @@ const updateInvoiceWithId = updateInvoice.bind(null, invoice.id);
 - 不能写成 `updateInvoice(id)` 传参，必须用 `.bind(null, id)`，或用隐藏 `input`。
 - 金额用**分**存储，避免浮点误差。
 - 用 UUID 而非自增主键可降低被枚举的风险。
+- zod 要装 **v3**（`npm install zod@3`）：v4 删掉了 `invalid_type_error` / `required_error`（统一成 `error`），课程代码是 v3 写法。
 
 ## ✅ 完成标准
 

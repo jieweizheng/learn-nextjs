@@ -30,10 +30,11 @@ export const chapter11: Chapter = {
       why: "先有界面才能有提交。",
       explain: [
         "新建 `app/dashboard/invoices/create/page.tsx`：`async` 服务端页面，用 `fetchCustomers()` 取客户列表，渲染 `<Form customers={customers} />`。",
+        "页面顶部的 `<Breadcrumbs />` 要传一个 `breadcrumbs` 数组，每项形如 `{ label, href, active? }`，用来显示「Invoices / Create Invoice」面包屑导航。",
         "`<Form />` 在 `app/ui/invoices/create-form.tsx`：`<select name=\"customerId\">` + 金额、状态、日期输入框。**每个输入框都要有 `name`** —— 它就是 `FormData` 里的键，服务端靠它取值。",
       ],
       code:
-        "// app/dashboard/invoices/create/page.tsx\nimport Form from '@/app/ui/invoices/create-form';\nimport Breadcrumbs from '@/app/ui/invoices/breadcrumbs';\nimport { fetchCustomers } from '@/app/lib/data';\n\nexport default async function Page() {\n  const customers = await fetchCustomers();\n\n  return (\n    <main>\n      <Breadcrumbs /* ... */ />\n      <Form customers={customers} />\n    </main>\n  );\n}",
+        "// app/dashboard/invoices/create/page.tsx\nimport Form from '@/app/ui/invoices/create-form';\nimport Breadcrumbs from '@/app/ui/invoices/breadcrumbs';\nimport { fetchCustomers } from '@/app/lib/data';\n\nexport default async function Page() {\n  const customers = await fetchCustomers();\n\n  return (\n    <main>\n      <Breadcrumbs\n        breadcrumbs={[\n          { label: 'Invoices', href: '/dashboard/invoices' },\n          {\n            label: 'Create Invoice',\n            href: '/dashboard/invoices/create',\n            active: true,\n          },\n        ]}\n      />\n      <Form customers={customers} />\n    </main>\n  );\n}",
       check: "`/dashboard/invoices/create` 能打开，客户下拉框里有真实数据。",
       pitfalls: [
         "输入框漏写 `name`，服务端就取不到该字段 —— 表单类 bug 的第一嫌疑人。",
@@ -56,6 +57,7 @@ export const chapter11: Chapter = {
       title: "用 zod 校验并准备数据",
       why: "永远不要信任客户端传来的数据 —— 校验必须在服务端做。",
       explain: [
+        "先安装 zod：`npm install zod@3`。**务必钉在 v3** —— 课程用的是 Zod 3 语法；若直接 `npm install zod`（会装到 v4），`invalid_type_error` 已被移除、编译会报类型错误。",
         "用 zod 定义 schema：`customerId` 用 `z.string()`、`amount` 用 `z.coerce.number().gt(0)`、`status` 用 `z.enum(['pending', 'paid'])`，然后 `schema.parse({...})` 取出校验后的值；失败会抛错（第 12 章讲怎么优雅处理）。",
         "两个转换细节：",
         "- **金额转成分**（`Math.round(amount * 100)`），库里存整数分，避免浮点误差",
@@ -63,10 +65,11 @@ export const chapter11: Chapter = {
         "安全细节：`id`、`date` 这类由服务端决定的字段**不要**从表单取。文档的做法是不用表单传 id，而在服务端生成或用数据库默认值 —— 避免用户篡改。",
       ],
       code:
-        "// app/lib/actions.ts —— 在上一步那个文件里继续加（'use server' 那行保留在最顶部）\n'use server';\n\nimport { z } from 'zod';\nimport { revalidatePath } from 'next/cache';\nimport { redirect } from 'next/navigation';\nimport postgres from 'postgres';\n\nconst sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });\n\nconst FormSchema = z.object({\n  id: z.string(),\n  customerId: z.string({ invalid_type_error: 'Please select a customer.' }),\n  amount: z.coerce.number().gt(0, { message: 'Please enter an amount greater than $0.' }),\n  status: z.enum(['pending', 'paid'], { invalid_type_error: 'Please select an invoice status.' }),\n  date: z.string(),\n});\n\nconst CreateInvoice = FormSchema.omit({ id: true, date: true });\n\nexport async function createInvoice(formData: FormData) {\n  const { customerId, amount, status } = CreateInvoice.parse({\n    customerId: formData.get('customerId'),\n    amount: formData.get('amount'),\n    status: formData.get('status'),\n  });\n  const amountInCents = Math.round(amount * 100);\n  const date = new Date().toISOString().split('T')[0];\n  // ……下一步写入数据库\n}",
+        "// app/lib/actions.ts —— 在上一步那个文件里继续加（'use server' 那行保留在最顶部）\n'use server';\n\nimport { z } from 'zod';\nimport { revalidatePath } from 'next/cache';\nimport { redirect } from 'next/navigation';\nimport postgres from 'postgres';\n\nconst sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });\n\nconst FormSchema = z.object({\n  id: z.string(),\n  customerId: z.string({ invalid_type_error: 'Please select a customer.' }),\n  amount: z.coerce.number().gt(0, { message: 'Please enter an amount greater than $0.' }),\n  status: z.enum(['pending', 'paid'], { invalid_type_error: 'Please select an invoice status.' }),\n  date: z.string(),\n});\n\nconst CreateInvoice = FormSchema.omit({ id: true, date: true });\n\nexport async function createInvoice(formData: FormData) {\n  const { customerId, amount, status } = CreateInvoice.parse({\n    customerId: formData.get('customerId'),\n    amount: formData.get('amount'),\n    status: formData.get('status'),\n  });\n  const amountInCents = Math.round(amount * 100);\n  const date = new Date().toISOString().split('T')[0];\n  // 下一步在这里执行 INSERT\n}",
       check: "提交金额为 0 或空的表单，服务端抛出 zod 校验错误（终端可见）；填对则通过。",
       pitfalls: [
         "`formData.get(...)` 得到 `string | File | null`，所以要用 `z.coerce.number()` 之类转换。",
+        "Zod 版本别装错：v4 删掉了 `invalid_type_error` / `required_error`（统一成 `error`），而课程代码是 v3 写法 —— 装 `zod@3` 最省事。",
       ],
     },
     {
@@ -97,12 +100,14 @@ export const chapter11: Chapter = {
       title: "编辑发票：动态路由取 id，用 .bind() 传参",
       why: "更新要知道「改哪一条」，涉及 Server Action 传参的写法坑。",
       explain: [
-        "新建 `app/dashboard/invoices/[id]/edit/page.tsx`：从 `params` 取 `id`（Next.js 16 里 `params` 是 Promise，要 `await`），**并行**取数 `const [invoice, customers] = await Promise.all([fetchInvoiceById(id), fetchCustomers()])`，再渲染 `<Form invoice={invoice} customers={customers} />`。",
-        "服务端写 `updateInvoice(id, formData)`。客户端**不能**写 `action={updateInvoice(invoice.id)}`（渲染时就会调用）。正确写法用 **`.bind()`** 预填第一个参数：`const updateInvoiceWithId = updateInvoice.bind(null, invoice.id);`。",
+        "新建 `app/dashboard/invoices/[id]/edit/page.tsx`：从 `params` 取 `id`（Next.js 16 里 `params` 是 Promise，要 `await`），**并行**取数 `const [invoice, customers] = await Promise.all([fetchInvoiceById(id), fetchCustomers()])`，再用 `<Breadcrumbs>`（这次是「Invoices / Edit Invoice」）与 `<Form invoice={invoice} customers={customers} />` 渲染。",
+        "服务端在 `app/lib/actions.ts` 里加 `updateInvoice(id, formData)`：解析表单 → `UPDATE` 写库 → `revalidatePath` + `redirect`（与 `createInvoice` 同一套路，只多一个 `id` 参数）。",
+        "还要接上入口：列表里每行的**编辑铅笔**来自 `app/ui/invoices/buttons.tsx` 的 `UpdateInvoice`，要把它的 `href` 指向编辑页 —— `/dashboard/invoices/${id}/edit`。starter 里是占位链接（指向列表页自身），不改的话点铅笔不会进编辑页。",
+        "接 Action 有个坑：客户端**不能**写 `action={updateInvoice(invoice.id)}`（会在渲染时立刻调用）。正确写法用 **`.bind()`** 预填第一个参数：`const updateInvoiceWithId = updateInvoice.bind(null, invoice.id);`，再把 `<form>` 的 action 设成它。",
         "另一种等价方案是隐藏域 `<input type=\"hidden\" name=\"id\" value={invoice.id} />` 再从 `formData.get('id')` 取。课程都提了，`bind` 更干净。",
       ],
       code:
-        "// app/dashboard/invoices/[id]/edit/page.tsx\nimport { fetchInvoiceById, fetchCustomers } from '@/app/lib/data';\n\nexport default async function Page(props: { params: Promise<{ id: string }> }) {\n  const params = await props.params;\n  const id = params.id;\n  const [invoice, customers] = await Promise.all([\n    fetchInvoiceById(id),\n    fetchCustomers(),\n  ]);\n  // ……\n  <Form invoice={invoice} customers={customers} />\n}\n\n// app/ui/invoices/edit-form.tsx\nconst updateInvoiceWithId = updateInvoice.bind(null, invoice.id);\n<form action={updateInvoiceWithId}>",
+        "// ① app/dashboard/invoices/[id]/edit/page.tsx —— 新建这个文件，完整代码\nimport Form from '@/app/ui/invoices/edit-form';\nimport Breadcrumbs from '@/app/ui/invoices/breadcrumbs';\nimport { fetchInvoiceById, fetchCustomers } from '@/app/lib/data';\n\nexport default async function Page(props: { params: Promise<{ id: string }> }) {\n  const params = await props.params;\n  const id = params.id;\n  const [invoice, customers] = await Promise.all([\n    fetchInvoiceById(id),\n    fetchCustomers(),\n  ]);\n\n  return (\n    <main>\n      <Breadcrumbs\n        breadcrumbs={[\n          { label: 'Invoices', href: '/dashboard/invoices' },\n          {\n            label: 'Edit Invoice',\n            href: `/dashboard/invoices/${id}/edit`,\n            active: true,\n          },\n        ]}\n      />\n      <Form invoice={invoice} customers={customers} />\n    </main>\n  );\n}\n\n// ② app/ui/invoices/edit-form.tsx —— 改已有文件，只动三处\n// 改动 1：顶部导入\nimport { updateInvoice } from '@/app/lib/actions';\n\n// 改动 2：组件体内、return 之前加这一行（.bind 把 id 预填成第一个参数）\nconst updateInvoiceWithId = updateInvoice.bind(null, invoice.id);\n\n// 改动 3：把原来的 <form> 换成带 action 的形式\n<form action={updateInvoiceWithId}>\n\n// ③ app/lib/actions.ts —— 在 createInvoice 后面继续加这个函数\nconst UpdateInvoice = FormSchema.omit({ id: true, date: true });\n\nexport async function updateInvoice(id: string, formData: FormData) {\n  const { customerId, amount, status } = UpdateInvoice.parse({\n    customerId: formData.get('customerId'),\n    amount: formData.get('amount'),\n    status: formData.get('status'),\n  });\n  const amountInCents = Math.round(amount * 100);\n\n  await sql`\n    UPDATE invoices\n    SET customer_id = ${customerId}, amount = ${amountInCents}, status = ${status}\n    WHERE id = ${id}\n  `;\n\n  revalidatePath('/dashboard/invoices');\n  redirect('/dashboard/invoices');\n}\n\n// ④ app/ui/invoices/buttons.tsx —— 把 UpdateInvoice 的链接指向编辑页（否则点铅笔不会进编辑页）\nexport function UpdateInvoice({ id }: { id: string }) {\n  return (\n    <Link\n      href={`/dashboard/invoices/${id}/edit`}\n      className='rounded-md border p-2 hover:bg-gray-100'\n    >\n      <PencilIcon className='w-5' />\n    </Link>\n  );\n}",
       check: "打开某张发票的编辑页，改金额保存后，列表页显示新值。",
       pitfalls: [
         "写成 `action={updateInvoice(invoice.id)}` 会在渲染时立刻执行，表单提交反而失败。",
@@ -118,7 +123,7 @@ export const chapter11: Chapter = {
         "无障碍：只放垃圾桶图标，屏幕阅读器只知道「按钮」。课程用 `sr-only` 隐藏文字或 `aria-label` 给出可读名称。",
       ],
       code:
-        "// app/ui/invoices/buttons.tsx\nconst deleteInvoiceWithId = deleteInvoice.bind(null, id);\n\n<form action={deleteInvoiceWithId}>\n  <button className=\"rounded-md border p-2 hover:bg-gray-100\">\n    <span className=\"sr-only\">Delete</span>\n    <TrashIcon className=\"w-5\" />\n  </button>\n</form>\n\n// app/lib/actions.ts\nexport async function deleteInvoice(id: string) {\n  await sql`DELETE FROM invoices WHERE id = ${id}`;\n  revalidatePath('/dashboard/invoices');\n}",
+        "// ① app/ui/invoices/buttons.tsx —— 把 DeleteInvoice 改成这样：用 <form> 包住按钮 + .bind 预填 id\nimport { deleteInvoice } from '@/app/lib/actions';\n\nexport function DeleteInvoice({ id }: { id: string }) {\n  const deleteInvoiceWithId = deleteInvoice.bind(null, id);\n\n  return (\n    <form action={deleteInvoiceWithId}>\n      <button className='rounded-md border p-2 hover:bg-gray-100'>\n        <span className='sr-only'>Delete</span>\n        <TrashIcon className='w-5' />\n      </button>\n    </form>\n  );\n}\n\n// ② app/lib/actions.ts —— 继续加 deleteInvoice（删除后停在当前路由，不需要 redirect）\nexport async function deleteInvoice(id: string) {\n  await sql`DELETE FROM invoices WHERE id = ${id}`;\n  revalidatePath('/dashboard/invoices');\n}",
       check: "点击删除后该行从列表消失；刷新后仍然不在。",
     },
   ],

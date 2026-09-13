@@ -48,7 +48,7 @@ export const chapter08: Chapter = {
         "这是**只用于教学的演示代码**，练完要注释回去。",
       ],
       code:
-        "// app/lib/data.ts → fetchRevenue() 里的演示代码\nexport async function fetchRevenue() {\n  try {\n    console.log('Fetching revenue data...');\n    await new Promise((resolve) => setTimeout(resolve, 3000));\n\n    const data = await sql<Revenue>`SELECT * FROM revenue`;\n\n    console.log('Data fetch completed after 3 seconds.');\n    return data;\n  } catch (error) { /* ... */ }\n}",
+        "// app/lib/data.ts → fetchRevenue() 里的演示代码\nexport async function fetchRevenue() {\n  try {\n    console.log('Fetching revenue data...');\n    await new Promise((resolve) => setTimeout(resolve, 3000));\n\n    const data = await sql<Revenue>`SELECT * FROM revenue`;\n\n    console.log('Data fetch completed after 3 seconds.');\n    return data;\n  } catch (error) {\n    console.error('Database Error:', error);\n    throw new Error('Failed to fetch revenue data.');\n  }\n}",
       check: "代码已取消注释且保存，终端里没有报错。",
     },
     {
