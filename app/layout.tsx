@@ -10,6 +10,12 @@ export const metadata: Metadata = {
   },
   description:
     "根据 Next.js 官方 Dashboard 课程整理的 16 章学习工作台：章节清单、每章学习计划，以及引导式学习的 Agent 规则。",
+    icons: {
+      icon: '/favicon.ico',          // public/ 下的路径从这里取
+    },
+    openGraph: {
+      images: ['/opengraph-image.png'],
+    },
 };
 
 export default function RootLayout({

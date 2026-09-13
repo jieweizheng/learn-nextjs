@@ -8,7 +8,12 @@ import LatestInvoices from '@/app/ui/dashboard/latest-invoices';
 import CardWrapper from '@/app/ui/dashboard/cards'; // ← Card 是具名导出，要带花括号
 import { Suspense } from 'react';
 import { CardsSkeleton, LatestInvoicesSkeleton, RevenueChartSkeleton } from '@/app/ui/skeletons';
+import { Metadata } from 'next';
   
+export const metadata: Metadata = {
+  title: 'Dashboard'
+}
+
   export default async function Page() {
     const {
       numberOfInvoices,

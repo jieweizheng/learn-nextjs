@@ -33,11 +33,16 @@ export const chapter15: Chapter = {
       explain: [
         "把 `favicon.ico` 移到 `app/` 根目录，Next 自动注入 `<link rel='icon'>`；把 `opengraph-image.png`（或 `.jpg`）也放进去，自动生成 Open Graph 与 Twitter 图片标签。",
         "好处是**不用写任何代码**，且 Next 会做缓存破坏（文件名带哈希），用户不会看到旧图标。",
-        "本项目 `public/` 里已有 `favicon.ico` 与 `opengraph-image.png`（第 1 章搬素材时复制的）。按课程把它们**移到 `app/` 根目录**；想省事也可以留在 `public/` 并在 `metadata` 里显式声明 `icons` / `openGraph.images`。",
+        "本项目 `public/` 里已有 `favicon.ico` 与 `opengraph-image.png`（第 1 章搬素材时复制的），`app/` 根目录还没有。按课程把它们**移到 `app/` 根目录**即可：`app/favicon.ico`、`app/opengraph-image.png`。",
+        "想省事、不移动文件也可以 —— 那就不用文件式，改用配置式：**在 `app/layout.tsx` 已有的那个 `metadata` 导出里**补上 `icons` 与 `openGraph.images`（下面示例）。两条路选一条，不要混着来。",
       ],
       check: "查看页面源码能看到图标生效；用社交平台调试工具或 `next build` 输出确认分享图标签存在。",
+      code:
+        "// 方案 B：不移动文件，改在 app/layout.tsx 已有的 metadata 里声明（与方案 A 二选一）\nimport type { Metadata } from 'next';\n\nexport const metadata: Metadata = {\n  title: {\n    template: '%s | Next.js 学习之旅',\n    default: 'Next.js 学习之旅',\n  },\n  description: '根据 Next.js 官方 Dashboard 课程整理的 16 章学习工作台。',\n  icons: {\n    icon: '/favicon.ico',          // public/ 下的路径从这里取\n  },\n  openGraph: {\n    images: ['/opengraph-image.png'],\n  },\n};\n\n// 若同时配了 metadataBase，images 会拼成绝对地址（分享平台需要）：\n// metadataBase: new URL('https://你的域名'),\n// → https://你的域名/opengraph-image.png",
       pitfalls: [
         "文件放错目录（如放进 `app/dashboard/`）作用范围就变了 —— 文件式元数据同样「就近生效」。",
+        "两个方案别混用：`app/` 里已经有这些文件时，又在 `metadata` 里写一遍不会报错，但容易记不清到底哪份在生效。",
+        "⚠️ **「DevTools 的 Network 里看不到 `/favicon.ico` 请求」是正常的，不代表没生效**：favicon 由**浏览器进程**加载，而 Network 面板记录的是**渲染进程**的网络活动，两者不是同一个通道。另外 Chrome 有一份**独立于 HTTP 缓存的 favicon 缓存**，「Disable cache」清不掉它，所以图标常常连请求都不发。要确认真在工作，用这几种方式：① 新标签页**直接访问** `http://localhost:3000/favicon.ico`（这是普通文档导航，Network 一定记录）；② 在 Elements 面板的 `<head>` 里确认 `<link rel=\"icon\" href=\"/favicon.ico\"/>` 存在；③ 想逼 Chrome 重新拉一次，就**完全退出 Chrome** 并删掉 `%LOCALAPPDATA%\\Google\\Chrome\\User Data\\Default\\Favicons` 再启动（或用隐私窗口）。",
       ],
     },
     {
